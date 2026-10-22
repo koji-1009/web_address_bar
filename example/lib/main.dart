@@ -41,6 +41,7 @@ class WebScrollTestApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'web_address_bar example',
+      theme: ThemeData(colorSchemeSeed: Colors.indigo),
       builder: (BuildContext context, Widget? child) =>
           WebAddressBarScrollToTop(child: child!),
       home: home ?? const TestMenu(),
@@ -53,46 +54,53 @@ class TestMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = TextTheme.of(context);
+    final ColorScheme colors = ColorScheme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Tests')),
+      appBar: AppBar(title: const Text('web_address_bar example')),
       body: ListView(
         padding: const .all(16),
-        children: const [
+        children: [
           Padding(
-            padding: .only(bottom: 8),
+            padding: const .only(left: 4, bottom: 8),
             child: Text(
               'Flutter ${FlutterVersion.version} '
               '(${FlutterVersion.channel}, ${FlutterVersion.frameworkRevision})',
+              style: textTheme.bodySmall?.copyWith(
+                color: colors.onSurfaceVariant,
+              ),
             ),
           ),
-          _TestTile(
-            title: 'Basic Vertical ListView',
-            subtitle: 'Address bar should collapse when scrolling down',
+          const _TestTile(
+            title: BasicVerticalListTest.title,
+            subtitle: 'Scrolling down collapses the address bar',
             destination: BasicVerticalListTest(),
           ),
-          _TestTile(
-            title: 'Nested Scrollables',
-            subtitle: 'Horizontal PageView inside a vertical ListView',
+          const _TestTile(
+            title: NestedScrollTest.title,
+            subtitle: 'A horizontal page view inside a vertical list',
             destination: NestedScrollTest(),
           ),
-          _TestTile(
-            title: 'Interactive Widgets',
-            subtitle: 'Buttons, sliders, text fields inside a scroll view',
+          const _TestTile(
+            title: InteractiveWidgetsTest.title,
+            subtitle: 'Buttons, a slider, a switch and a text field in a list',
             destination: InteractiveWidgetsTest(),
           ),
-          _TestTile(
-            title: 'Tap-Only Page (No Scroll)',
-            subtitle: 'Non-scrollable page with tappable buttons',
+          const _TestTile(
+            title: TapOnlyTest.title,
+            subtitle: 'A page that does not scroll, with a tappable box',
             destination: TapOnlyTest(),
           ),
-          _TestTile(
-            title: 'Collapsed Extent',
+          const _TestTile(
+            title: CollapsedExtentTest.title,
             subtitle: 'WebAddressBar.collapsedExtent and the view metrics',
             destination: CollapsedExtentTest(),
           ),
-          _TestTile(
-            title: 'Long Drag (flutter/flutter#194104)',
-            subtitle: 'One long, slow drag must leave no pointer down',
+          const _TestTile(
+            title: LongDragTest.title,
+            subtitle:
+                'One long, slow drag leaves no pointer down '
+                '(flutter/flutter#194104)',
             destination: LongDragTest(),
           ),
         ],
@@ -115,10 +123,11 @@ class _TestTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      clipBehavior: Clip.antiAlias,
       child: ListTile(
         title: Text(title),
         subtitle: Text(subtitle),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        trailing: const Icon(Icons.chevron_right),
         onTap: () {
           Navigator.of(context)
               .push(MaterialPageRoute<void>(builder: (_) => destination));

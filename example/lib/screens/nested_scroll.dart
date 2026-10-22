@@ -3,18 +3,21 @@ import 'package:material_ui/material_ui.dart';
 class NestedScrollTest extends StatelessWidget {
   const NestedScrollTest({super.key});
 
+  static const String title = 'Nested scrollables';
+
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = ColorScheme.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Nested Scrollables')),
+      appBar: AppBar(title: const Text(title)),
       body: ListView(
         children: [
-          const Padding(
-            padding: .all(16),
+          Padding(
+            padding: const .all(16),
             child: Text(
-              'Vertical scroll should collapse address bar.\n'
-              'Horizontal swipe should switch pages without interfering.',
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+              'A vertical drag collapses the address bar.\n'
+              'A horizontal swipe changes the page without scrolling the list.',
+              style: TextStyle(color: colors.onSurfaceVariant),
             ),
           ),
           SizedBox(
@@ -23,15 +26,13 @@ class NestedScrollTest extends StatelessWidget {
               itemCount: 10,
               itemBuilder: (context, index) => Card(
                 margin: const .symmetric(horizontal: 16, vertical: 8),
-                color:
-                    Colors.primaries[index % Colors.primaries.length].shade200,
+                color: index.isEven
+                    ? colors.primaryContainer
+                    : colors.tertiaryContainer,
                 child: Center(
                   child: Text(
                     'Page ${index + 1}',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextTheme.of(context).headlineMedium,
                   ),
                 ),
               ),
@@ -39,11 +40,8 @@ class NestedScrollTest extends StatelessWidget {
           ),
           for (int i = 0; i < 50; i++)
             ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.teal.shade100,
-                child: Text('${i + 1}'),
-              ),
-              title: Text('List item ${i + 1}'),
+              leading: CircleAvatar(child: Text('${i + 1}')),
+              title: Text('Item ${i + 1}'),
             ),
         ],
       ),

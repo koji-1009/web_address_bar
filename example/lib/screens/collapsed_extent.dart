@@ -10,6 +10,8 @@ import '../automation.dart';
 class CollapsedExtentTest extends StatelessWidget {
   const CollapsedExtentTest({super.key});
 
+  static const String title = 'Collapsed extent';
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData media = MediaQuery.of(context);
@@ -19,7 +21,7 @@ class CollapsedExtentTest extends StatelessWidget {
     String insets(EdgeInsets e) =>
         'T ${e.top.toStringAsFixed(1)} B ${e.bottom.toStringAsFixed(1)}';
     return Scaffold(
-      appBar: AppBar(title: const Text('Collapsed Extent')),
+      appBar: AppBar(title: const Text(title)),
       body: Column(
         children: <Widget>[
           ValueListenableBuilder<double>(

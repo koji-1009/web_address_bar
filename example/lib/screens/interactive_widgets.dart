@@ -3,6 +3,8 @@ import 'package:material_ui/material_ui.dart';
 class InteractiveWidgetsTest extends StatefulWidget {
   const InteractiveWidgetsTest({super.key});
 
+  static const String title = 'Interactive widgets';
+
   @override
   State<InteractiveWidgetsTest> createState() => _InteractiveWidgetsTestState();
 }
@@ -22,14 +24,13 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Interactive Widgets')),
+      appBar: AppBar(title: const Text(InteractiveWidgetsTest.title)),
       body: ListView(
         padding: const .all(16),
         children: [
-          const Text(
-            'All widgets below should remain fully interactive '
-            'with WebAddressBar enabled.',
-            style: TextStyle(color: Colors.grey),
+          Text(
+            'Every widget below works as usual with WebAddressBar enabled.',
+            style: TextStyle(color: ColorScheme.of(context).onSurfaceVariant),
           ),
           const SizedBox(height: 16),
           Card(
@@ -39,13 +40,13 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
                 children: [
                   Text(
                     'Tap count: $_tapCount',
-                    style: const TextStyle(fontSize: 18),
+                    style: TextTheme.of(context).titleMedium,
                   ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
+                      FilledButton(
                         onPressed: () => setState(() => _tapCount++),
                         child: const Text('Tap me'),
                       ),
@@ -77,8 +78,9 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
           ),
           const SizedBox(height: 12),
           Card(
+            clipBehavior: Clip.antiAlias,
             child: SwitchListTile(
-              title: const Text('Toggle switch'),
+              title: const Text('Switch'),
               value: _switchValue,
               onChanged: (v) => setState(() => _switchValue = v),
             ),
@@ -98,24 +100,20 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
           ),
           const SizedBox(height: 12),
           Card(
-            child: GestureDetector(
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
               onLongPress: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Long press detected!')),
+                  const SnackBar(content: Text('Long press detected')),
                 );
               },
-              child: Container(
-                padding: const .all(24),
-                alignment: Alignment.center,
-                child: const Text('Long press me'),
+              child: const Padding(
+                padding: .all(24),
+                child: Center(child: Text('Long press me')),
               ),
             ),
           ),
-          for (int i = 0; i < 30; i++)
-            ListTile(
-              title: Text('Filler item ${i + 1}'),
-              tileColor: i.isEven ? Colors.grey.shade50 : null,
-            ),
+          for (int i = 0; i < 30; i++) ListTile(title: Text('Item ${i + 1}')),
         ],
       ),
     );

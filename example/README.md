@@ -22,12 +22,12 @@ Reload the page before each check.
 
 | Screen | Expected |
 |---|---|
-| Basic Vertical ListView | Dragging up collapses the address bar. The list follows the finger and flings on release. The page does not pull to refresh, rubber-band or keep scrolling. |
-| Nested Scrollables | A vertical drag collapses the bar; a horizontal swipe changes the page. |
-| Interactive Widgets | Each tap counts once; the slider drags; the switch toggles; the text field takes input with the keyboard up; a long press shows a SnackBar. |
-| Tap-Only Page | A drag collapses the bar even though nothing scrolls; each tap on the box counts once. |
-| Collapsed Extent | `collapsedExtent` is the bar's height while it shows and 0 once collapsed. |
-| Long Drag | After one long, slow drag, "Pointers down" is 0 and the list is idle. |
+| Vertical list | Dragging up collapses the address bar. The list follows the finger and flings on release. The page does not pull to refresh, rubber-band or keep scrolling. |
+| Nested scrollables | A vertical drag collapses the bar; a horizontal swipe changes the page. |
+| Interactive widgets | Each tap counts once; the slider drags; the switch toggles; the text field takes input with the keyboard up; a long press shows a SnackBar. |
+| Tap only | A drag collapses the bar even though nothing scrolls; each tap on the box counts once. |
+| Collapsed extent | `collapsedExtent` is the bar's height while it shows and 0 once collapsed. |
+| Long drag | After one long, slow drag, "Pointers down" is 0 and the list is idle. |
 
 ## Automated check
 

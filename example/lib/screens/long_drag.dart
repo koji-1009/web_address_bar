@@ -15,6 +15,8 @@ import '../automation.dart';
 class LongDragTest extends StatefulWidget {
   const LongDragTest({super.key});
 
+  static const String title = 'Long drag';
+
   @override
   State<LongDragTest> createState() => _LongDragTestState();
 }
@@ -75,12 +77,14 @@ class _LongDragTestState extends State<LongDragTest> {
         setState(() => _pointersDown.remove(event.pointer));
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Long Drag')),
+        appBar: AppBar(title: const Text(LongDragTest.title)),
         body: Column(
           children: <Widget>[
             Container(
               width: double.infinity,
-              color: _pointersDown.isEmpty ? null : Colors.yellow,
+              color: _pointersDown.isEmpty
+                  ? null
+                  : ColorScheme.of(context).tertiaryContainer,
               padding: const .all(8),
               child: Text(
                 'Pointers down: ${_pointersDown.length}\n'
