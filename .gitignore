@@ -1,0 +1,8 @@
+.dart_tool/
+build/
+/pubspec.lock
+.idea/
+*.iml
+
+# FVM Version Cache
+.fvm/
