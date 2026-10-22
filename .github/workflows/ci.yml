@@ -39,12 +39,9 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version: 26
 
       - run: flutter --version
-
-      - name: Get dependencies
-        run: flutter pub get
 
       - name: Check formatting
         run: dart format -o none --set-exit-if-changed .
