@@ -4,7 +4,10 @@ import 'package:web_address_bar/web_address_bar.dart';
 
 import 'screens/basic_vertical_list.dart';
 import 'screens/collapsed_extent.dart';
+import 'screens/expanding_app_bar.dart';
+import 'screens/floating_app_bar.dart';
 import 'screens/interactive_widgets.dart';
+import 'screens/large_app_bar.dart';
 import 'screens/long_drag.dart';
 import 'screens/nested_scroll.dart';
 import 'screens/tap_only.dart';
@@ -27,6 +30,9 @@ const Map<String, Widget> screens = <String, Widget>{
   'nested': NestedScrollTest(),
   'interactive': InteractiveWidgetsTest(),
   'tap-only': TapOnlyTest(),
+  'large-app-bar': LargeAppBarTest(),
+  'expanding-app-bar': ExpandingAppBarTest(),
+  'floating-app-bar': FloatingAppBarTest(),
   'collapsed-extent': CollapsedExtentTest(),
   'long-drag': LongDragTest(),
 };
@@ -90,6 +96,22 @@ class TestMenu extends StatelessWidget {
             title: TapOnlyTest.title,
             subtitle: 'A page that does not scroll, with a tappable box',
             destination: TapOnlyTest(),
+          ),
+          const _TestTile(
+            title: LargeAppBarTest.title,
+            subtitle: 'A pinned large title that collapses into the toolbar',
+            destination: LargeAppBarTest(),
+          ),
+          const _TestTile(
+            title: ExpandingAppBarTest.title,
+            subtitle:
+                'A flexible space drawn edge-to-edge, under the status bar',
+            destination: ExpandingAppBarTest(),
+          ),
+          const _TestTile(
+            title: FloatingAppBarTest.title,
+            subtitle: 'An app bar that snaps back on any scroll toward the top',
+            destination: FloatingAppBarTest(),
           ),
           const _TestTile(
             title: CollapsedExtentTest.title,

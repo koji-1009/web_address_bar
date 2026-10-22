@@ -6,7 +6,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:web_address_bar_example/main.dart';
 import 'package:web_address_bar_example/screens/basic_vertical_list.dart';
 import 'package:web_address_bar_example/screens/collapsed_extent.dart';
+import 'package:web_address_bar_example/screens/expanding_app_bar.dart';
+import 'package:web_address_bar_example/screens/floating_app_bar.dart';
 import 'package:web_address_bar_example/screens/interactive_widgets.dart';
+import 'package:web_address_bar_example/screens/large_app_bar.dart';
 import 'package:web_address_bar_example/screens/long_drag.dart';
 import 'package:web_address_bar_example/screens/nested_scroll.dart';
 import 'package:web_address_bar_example/screens/tap_only.dart';
@@ -20,6 +23,9 @@ void main() {
       NestedScrollTest.title,
       InteractiveWidgetsTest.title,
       TapOnlyTest.title,
+      LargeAppBarTest.title,
+      ExpandingAppBarTest.title,
+      FloatingAppBarTest.title,
       CollapsedExtentTest.title,
       LongDragTest.title,
     ]) {
@@ -30,8 +36,9 @@ void main() {
       await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(BackButton), findsOneWidget, reason: title);
       expect(
+        // A large app bar has a collapsed and an expanded title.
         find.descendant(of: find.byType(AppBar), matching: find.text(title)),
-        findsOneWidget,
+        findsWidgets,
         reason: title,
       );
       await tester.tap(find.byType(BackButton));

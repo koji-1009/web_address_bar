@@ -13,7 +13,7 @@ Open `http://<your machine>:8080/` on an Android or iOS phone. For Chrome on And
 
 Query parameters:
 
-- `screen=basic|nested|interactive|tap-only|collapsed-extent|long-drag` opens a screen directly.
+- `screen=basic|nested|interactive|tap-only|large-app-bar|expanding-app-bar|floating-app-bar|collapsed-extent|long-drag` opens a screen directly.
 - `enable=0` leaves the package off, for comparing with stock behavior.
 
 ## What to check on a device
@@ -26,6 +26,9 @@ Reload the page before each check.
 | Nested scrollables | A vertical drag collapses the bar; a horizontal swipe changes the page. |
 | Interactive widgets | Each tap counts once; the slider drags; the switch toggles; the text field takes input with the keyboard up; a long press shows a SnackBar. |
 | Tap only | A drag collapses the bar even though nothing scrolls; each tap on the box counts once. |
+| Large app bar | Dragging up collapses the address bar and folds the large title into the toolbar; a status bar tap on iOS brings both back. |
+| Expanding app bar | The colored background reaches under the status bar; dragging up collapses the address bar and the flexible space. |
+| Floating app bar | The app bar scrolls away with the list and snaps back on any downward drag, alongside the address bar. |
 | Collapsed extent | `collapsedExtent` is the bar's height while it shows and 0 once collapsed. |
 | Long drag | After one long, slow drag, "Pointers down" is 0 and the list is idle. |
 
