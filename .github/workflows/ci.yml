@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+  # The package leans on the DOM the engine builds; a weekly run on beta and
+  # master catches an engine change before it reaches stable.
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Flutter ${{ matrix.channel }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        channel: [stable, beta, master]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: koji-1009/setup-flutter@8602f8dee92d2365ed4d9af298572fbb38ab8c69 # v1.4.1
+        with:
+          channel: ${{ matrix.channel }}
+          # The release manifest has no master channel.
+          git-source: ${{ matrix.channel == 'master' && 'git' || 'release' }}
+          cache-sdk: false
+          cache-pub: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      - run: flutter --version
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        run: dart format -o none --set-exit-if-changed .
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test (VM, the no-op implementation)
+        run: flutter test
+
+      # Includes test/web/engine_structure_test.dart, which fails with the
+      # assumption that broke when the engine changes the DOM the package
+      # relies on, and test/web/controller_test.dart, which fails when enable
+      # falls back to a no-op on a page it should take over.
+      - name: Test (Chrome, JavaScript)
+        run: flutter test --platform chrome
+
+      - name: Test (Chrome, WebAssembly)
+        run: flutter test --platform chrome --wasm
+
+      - name: Test the example
+        working-directory: example
+        run: flutter test --platform chrome
+
+      - name: Build the example (JavaScript)
+        working-directory: example
+        run: flutter build web --profile
+
+      - name: End-to-end (headless Chrome, Android emulation, JavaScript)
+        run: node example/tool/example_cdp.mjs --check --chrome=/usr/bin/google-chrome
+
+      - name: Build the example (WebAssembly)
+        working-directory: example
+        run: flutter build web --wasm
+
+      - name: End-to-end (headless Chrome, Android emulation, WebAssembly)
+        run: node example/tool/example_cdp.mjs --check --chrome=/usr/bin/google-chrome
+
+      - name: Publish dry run
+        if: matrix.channel == 'stable'
+        run: dart pub publish --dry-run
