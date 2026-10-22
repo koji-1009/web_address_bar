@@ -75,10 +75,10 @@
   <line x1="666" y1="300" x2="666" y2="210" stroke="#9a5a00" stroke-width="2" marker-end="url(#arrow-doc)"/>
   <text x="678" y="226" font-size="12" fill="#9a5a00">the document</text>
   <text x="678" y="242" font-size="12" fill="#9a5a00">scrolled under</text>
-  <text x="678" y="258" font-size="12" fill="#9a5a00">the view: about</text>
-  <text x="678" y="274" font-size="12" fill="#9a5a00">1px on Android,</text>
-  <text x="678" y="290" font-size="12" fill="#9a5a00">not the bar's</text>
-  <text x="678" y="306" font-size="12" fill="#9a5a00">height (scroll</text>
+  <text x="678" y="258" font-size="12" fill="#9a5a00">the view and</text>
+  <text x="678" y="274" font-size="12" fill="#9a5a00">rests on a snap</text>
+  <text x="678" y="290" font-size="12" fill="#9a5a00">point around</text>
+  <text x="678" y="306" font-size="12" fill="#9a5a00">5000px (scroll</text>
   <text x="678" y="322" font-size="12" fill="#9a5a00">range per</text>
   <text x="678" y="338" font-size="12" fill="#9a5a00">platform: below)</text>
 

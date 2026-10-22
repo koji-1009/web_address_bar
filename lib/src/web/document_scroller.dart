@@ -12,16 +12,18 @@ import 'environment.dart';
 /// spacer under `<html>` gives the document real overflow to scroll. The fixed
 /// `<body>` keeps the app where it is while the document scrolls.
 ///
-/// The scroll range differs per platform:
+/// The spacer is 10000px tall and `scroll-snap-type: y mandatory` parks the
+/// document in its middle, out of reach of pull-to-refresh and rubber-banding
+/// at either end (`overscroll-behavior` does not prevent them on iOS). The
+/// snap points differ per platform:
 ///
-/// * Android: `scroll-snap-type: y proximity` and a spacer one pixel taller
-///   than the viewport with the browser bars hidden (`100lvh`). Chrome does not
-///   collapse the bar under `mandatory`, and a longer range would keep
-///   scrolling the page after the bar is gone.
-/// * iOS: `scroll-snap-type: y mandatory` and a 10000px spacer with its snap
-///   point in the middle, which keeps pull-to-refresh and rubber-banding out of
-///   reach (`overscroll-behavior` does not prevent them there) and cuts
-///   Safari's momentum scrolling short.
+/// * Android: two, 2px apart around the middle. Chrome scrolls the page some
+///   way before it starts hiding its bar, so the range has to be long, and
+///   after a scroll it shows the bar again if the page then moves back up. With
+///   a point on either side, a scroll comes to rest on the one in the direction
+///   it went.
+/// * iOS: one, in the middle, which also cuts Safari's momentum scrolling
+///   short.
 ///
 /// [dispose] puts back every style it changed and removes the spacer, which
 /// leaves the document nothing to be scrolled by.
@@ -47,15 +49,16 @@ class DocumentScroller implements SessionPart {
       ..pointerEvents = 'none'
       ..opacity = '0';
 
+    _setStyle(html, 'scroll-snap-type', 'y mandatory');
+    spacer.style.height = '${spacerHeight}px';
+    const int middle = spacerHeight ~/ 2;
     switch (os) {
       case MobileOs.android:
-        _setStyle(html, 'scroll-snap-type', 'y proximity');
-        spacer.style.height = 'calc(100lvh + 1px)';
-        spacer.append(_createSnapTarget(1));
+        spacer
+          ..append(_createSnapTarget(middle - 1))
+          ..append(_createSnapTarget(middle + 1));
       case MobileOs.iOS:
-        _setStyle(html, 'scroll-snap-type', 'y mandatory');
-        spacer.style.height = '${iOSSpacerHeight}px';
-        spacer.append(_createSnapTarget(iOSSpacerHeight ~/ 2));
+        spacer.append(_createSnapTarget(middle));
     }
 
     html.append(spacer);
@@ -68,8 +71,8 @@ class DocumentScroller implements SessionPart {
   /// The tag of the element the document snaps to.
   static const String snapTargetTagName = 'web-address-bar-snap-target';
 
-  /// The height of the spacer on iOS, in CSS pixels.
-  static const int iOSSpacerHeight = 10000;
+  /// The height of the spacer, in CSS pixels.
+  static const int spacerHeight = 10000;
 
   final List<
     ({web.HTMLElement element, String property, String value, String priority})

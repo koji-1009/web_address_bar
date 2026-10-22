@@ -34,20 +34,29 @@ void main() {
       expect(_body.style.getPropertyValue('touch-action'), 'pan-y');
       expect(_body.style.getPropertyValue('overflow-y'), 'auto');
       expect(_html.style.getPropertyValue('scrollbar-width'), 'none');
-      // `proximity` is the default strictness and is dropped when serialized.
-      expect(_html.style.getPropertyValue('scroll-snap-type'), 'y');
     });
 
-    test('adds a spacer one pixel past the collapsed-bar viewport', () {
-      final web.HTMLElement spacer = _findSpacer()!;
-      expect(spacer.parentElement, _html);
-      expect(spacer.style.height, 'calc(100lvh + 1px)');
-      final web.HTMLElement target =
-          spacer.children.item(0)! as web.HTMLElement;
-      expect(target.localName, DocumentScroller.snapTargetTagName);
-      expect(target.style.top, '1px');
-      expect(target.style.getPropertyValue('scroll-snap-align'), 'start');
-    });
+    test(
+      'snaps mandatorily to either side of the middle of a 10000px spacer',
+      () {
+        expect(_html.style.getPropertyValue('scroll-snap-type'), 'y mandatory');
+        final web.HTMLElement spacer = _findSpacer()!;
+        expect(spacer.parentElement, _html);
+        expect(spacer.style.height, '10000px');
+        final List<web.HTMLElement> targets = <web.HTMLElement>[
+          for (int i = 0; i < spacer.children.length; i++)
+            spacer.children.item(i)! as web.HTMLElement,
+        ];
+        expect(
+          <String>[for (final t in targets) t.style.top],
+          <String>['4999px', '5001px'],
+        );
+        for (final web.HTMLElement target in targets) {
+          expect(target.localName, DocumentScroller.snapTargetTagName);
+          expect(target.style.getPropertyValue('scroll-snap-align'), 'start');
+        }
+      },
+    );
 
     test('gives the document overflow', () {
       final web.Element scroller = web.document.scrollingElement!;

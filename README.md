@@ -8,9 +8,9 @@ A mobile browser collapses its address bar when the user scrolls the document, w
 
 This package gives the browser a document to scroll, separate from the app:
 
-![On a vertical drag the browser scrolls the document under the Flutter view, which stays fixed to the viewport, and collapses its address bar; the engine resizes the view to the grown viewport, and on Android the document scrolls by about 1px, not by the bar's height](doc/how_it_works.svg)
+![On a vertical drag the browser scrolls the document under the Flutter view, which stays fixed to the viewport, and collapses its address bar; the engine resizes the view to the grown viewport, and the document comes to rest on a snap point around 5000px](doc/how_it_works.svg)
 
-![The scroll range per platform: on Android, scroll-snap-type y proximity and a calc(100lvh + 1px) spacer with a snap target at 1px, so the collapsing bar leaves 1px of scroll range; on iOS, scroll-snap-type y mandatory and a 10000px spacer parked on a snap target at 5000px, which keeps pull-to-refresh, rubber-banding and momentum scrolling out of reach](doc/scroll_range.svg)
+![The scroll range per platform, both with scroll-snap-type y mandatory and a 10000px spacer: on Android, two snap targets at 4999px and 5001px, on which the document rests with the bar shown and with the bar hidden, in a range long enough for the 130–180px Chrome scrolls before it starts hiding its bar, with both ends out of reach of pull-to-refresh; on iOS, the document parked on one snap target at 5000px, which keeps pull-to-refresh, rubber-banding and momentum scrolling out of reach](doc/scroll_range.svg)
 
 - The document gets a scroll range of its own, from a spacer under `<html>`, and `<body>` allows vertical panning (`touch-action: pan-y`). A vertical drag scrolls the document, and the browser spends that scroll on its address bar.
 - The Flutter view does not scroll with the document. `<body>`, which holds it, is `position: fixed`, so the view stays on the viewport and floats over the document while the document scrolls under it. As the bar collapses, the viewport grows and the engine resizes the view to fill it (on iOS, see [Compatibility](#compatibility)).
@@ -42,7 +42,7 @@ On Android and iOS, when Flutter owns the whole page:
 1. `<body>` gets `touch-action: pan-y`, so the browser reads a vertical drag as a scroll.
 2. A spacer under `<html>` gives the document real overflow for the browser to spend on its address bar. `<body>` stays `position: fixed`, so the app does not move.
 3. The scroll range is kept from doing anything else:
-   - Android: `scroll-snap-type: y proximity` with a spacer one pixel taller than the collapsed-bar viewport (`calc(100lvh + 1px)`). Chrome does not collapse the bar under `mandatory`, and a longer range would keep scrolling the page after the bar is gone.
+   - Android: `scroll-snap-type: y mandatory`, with a 10000px spacer and two snap points 2px apart in its middle. Chrome scrolls the page some way before it starts hiding its bar, and shows the bar again if the page then moves back up; with a snap point on either side, a scroll comes to rest on the one in the direction it went, and both ends stay out of reach of pull-to-refresh.
    - iOS: `scroll-snap-type: y mandatory`, parked on a snap point in the middle of a 10000px spacer, which keeps pull-to-refresh, rubber-banding and momentum scrolling of the page out of reach.
 4. Touch input is rebuilt from Touch Events and `pointerrawupdate`, because under `pan-y` the browser cancels the touch Pointer Events mid-drag. A pen touching the screen fires Touch Events too, so it is rebuilt the same way. The browser's Pointer Events of fingers and of pens on the screen are withheld from the engine after the elements they target (platform views, text fields) have had them, and the rebuilt contact is handed to the engine as touch Pointer Events, so its click debouncing, focus handling and accessibility bookkeeping work unchanged. Movement comes from `pointerrawupdate` while one finger is down, and from `touchmove` otherwise.
 
