@@ -35,6 +35,19 @@ void main() {
 
 `WebAddressBar.collapsedExtent` reports how much of the viewport the browser's UI covers right now, in logical pixels: the bar's height while it shows, 0 once it has collapsed.
 
+### Scrolling to the top on a status bar tap (iOS)
+
+Safari answers a tap on the iOS status bar by scrolling the document, which the package has taken over. Add `WebAddressBarScrollToTop` above the `Navigator` to scroll the current route's primary scroll view to the top instead, as a native iOS app does:
+
+```dart
+MaterialApp(
+  builder: (context, child) => WebAddressBarScrollToTop(child: child!),
+  // ...
+);
+```
+
+It animates the `PrimaryScrollController` of the current route, the way `Scaffold` does on iOS; routes that are not current, such as a page under a dialog, are left alone.
+
 ## How it works
 
 On Android and iOS, when Flutter owns the whole page:
@@ -57,7 +70,8 @@ Based on [flutter/flutter#184281](https://github.com/flutter/flutter/pull/184281
 
 ## Limitations
 
-- Tap-to-top (tapping the iOS status bar) and in-app browser sheets that rely on the page's scroll position are not handled: the page's scroll position does not follow the app's content.
+- In-app browser sheets that rely on the page's scroll position are not handled: the page's scroll position does not follow the app's content.
+- A status bar tap is recognised from the document's scroll position, as nothing else marks it: a scroll that reaches the upper half of the way to the top with no finger on the screen.
 - Touch input arrives as Touch Events, which carry no tilt, and multi-touch movement follows the browser's throttled `touchmove`.
 - A pen on the screen reaches the app as a touch, without pressure or tilt, and its movement follows `touchmove`. A hovering pen is reported as a stylus as usual. Apps that need pressure or tilt should not enable the package.
 - With semantics enabled, the engine gives its scrollable semantics nodes `touch-action: none`, so a drag that starts on one does not collapse the bar.

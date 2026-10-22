@@ -4,7 +4,7 @@
 
 ## Layout
 
-- `lib/src/web_address_bar.dart`: the public API (`WebAddressBar`).
+- `lib/src/web_address_bar.dart`: the public API (`WebAddressBar`); `lib/src/widgets/`: its widget, `WebAddressBarScrollToTop`.
 - `lib/src/web/`: the web implementation, one `SessionPart` per concern, set up and taken down by `controller.dart`.
 - `lib/src/stub/`: the no-op implementation for every other platform.
 - `test/stub_test.dart` runs on the VM; `test/web/` runs in Chrome.

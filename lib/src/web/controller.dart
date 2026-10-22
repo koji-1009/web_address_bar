@@ -10,6 +10,7 @@ import '../web_address_bar.dart';
 import 'document_scroller.dart';
 import 'environment.dart';
 import 'pointer_injector.dart';
+import 'status_bar_tap_detector.dart';
 import 'touch_input_source.dart';
 import 'touch_interceptor.dart';
 import 'viewport_metrics.dart';
@@ -26,6 +27,15 @@ bool get isActive => WebAddressBarController.instance.isActive;
 /// See [WebAddressBar.collapsedExtent].
 ValueListenable<double> get collapsedExtent =>
     WebAddressBarController.instance.collapsedExtent;
+
+/// Notifies its listeners of each tap on the iOS status bar.
+Listenable get statusBarTaps => WebAddressBarController.instance.statusBarTaps;
+
+/// Taps on the iOS status bar, for `WebAddressBarScrollToTop`.
+class StatusBarTaps extends ChangeNotifier {
+  /// Notifies the listeners of a tap.
+  void notify() => notifyListeners();
+}
 
 /// Something [WebAddressBarController] sets up on [enable] and takes down on
 /// [disable].
@@ -49,6 +59,9 @@ class WebAddressBarController {
 
   /// See `WebAddressBar.collapsedExtent`.
   final ValueNotifier<double> collapsedExtent = ValueNotifier<double>(0);
+
+  /// Notifies its listeners of each tap on the iOS status bar.
+  final StatusBarTaps statusBarTaps = StatusBarTaps();
 
   /// The environment of the last [enable] that did not take effect, for tests.
   @visibleForTesting
@@ -78,6 +91,8 @@ class WebAddressBarController {
       TouchInterceptor(environment.root, injector),
       TouchInputSource(environment.root, injector),
       ViewportMetrics(controller),
+      if (environment.os == MobileOs.iOS)
+        StatusBarTapDetector(controller.statusBarTaps.notify),
     ];
   }
 

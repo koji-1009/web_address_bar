@@ -41,6 +41,8 @@ class WebScrollTestApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'web_address_bar example',
+      builder: (BuildContext context, Widget? child) =>
+          WebAddressBarScrollToTop(child: child!),
       home: home ?? const TestMenu(),
     );
   }

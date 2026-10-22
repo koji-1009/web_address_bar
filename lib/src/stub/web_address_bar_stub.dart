@@ -16,3 +16,6 @@ bool get isActive => false;
 
 /// See [WebAddressBar.collapsedExtent]. Always 0.
 final ValueListenable<double> collapsedExtent = ValueNotifier<double>(0);
+
+/// Taps on the iOS status bar. Never notifies.
+final Listenable statusBarTaps = ChangeNotifier();

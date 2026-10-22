@@ -5,3 +5,4 @@
 library;
 
 export 'src/web_address_bar.dart';
+export 'src/widgets/web_address_bar_scroll_to_top.dart';
