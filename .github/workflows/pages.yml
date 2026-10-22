@@ -35,6 +35,11 @@ jobs:
           cache-sdk: false
           cache-pub: false
 
+      # Works out the SDK's version from its git tags; without it, pub sees a
+      # master SDK cloned from git as 0.0.0-unknown and rejects the package's
+      # Flutter constraint.
+      - run: flutter --version
+
       - name: Build the example
         working-directory: example
         run: flutter build web --base-href /web_address_bar/
