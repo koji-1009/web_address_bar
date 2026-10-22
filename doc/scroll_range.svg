@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="580" viewBox="0 0 800 580" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <pattern id="spacer" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#fff4e0"/>
+      <line x1="0" y1="0" x2="0" y2="8" stroke="#f0b860" stroke-width="3"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="580" fill="#ffffff"/>
+  <line x1="400" y1="16" x2="400" y2="560" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ============ Android ============ -->
+  <text x="24" y="30" font-size="16" font-weight="600" fill="#222">Android</text>
+  <text x="24" y="52" font-size="13" fill="#333">&lt;html&gt;: scroll-snap-type: y proximity</text>
+  <text x="24" y="70" font-size="13" fill="#333">spacer: height calc(100lvh + 1px)</text>
+
+  <!-- Spacer: 0 to 100lvh + 1px (lvh drawn as 340) -->
+  <rect x="40" y="96" width="40" height="341" fill="url(#spacer)" stroke="#e08a00" stroke-width="2"/>
+  <text x="60" y="456" text-anchor="middle" font-size="12" fill="#9a5a00">spacer</text>
+  <!-- Snap target at top 1px -->
+  <line x1="34" y1="97" x2="244" y2="97" stroke="#e08a00" stroke-width="2"/>
+  <circle cx="34" cy="97" r="3.5" fill="#e08a00"/>
+
+  <!-- Viewport, bar shown: 100svh (lvh - bar = 290) -->
+  <rect x="100" y="98" width="56" height="289" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed" stroke-width="2"/>
+  <text x="128" y="406" text-anchor="middle" font-size="12" fill="#1c5fb8">bar shown</text>
+  <text x="128" y="422" text-anchor="middle" font-size="12" fill="#1c5fb8">100svh</text>
+
+  <!-- Viewport, bar collapsed: 100lvh -->
+  <rect x="176" y="98" width="56" height="338" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed" stroke-width="2"/>
+  <text x="204" y="456" text-anchor="middle" font-size="12" fill="#1c5fb8">bar collapsed</text>
+  <text x="204" y="472" text-anchor="middle" font-size="12" fill="#1c5fb8">100lvh</text>
+
+  <!-- Bracket: overflow while the bar shows -->
+  <line x1="156" y1="387" x2="244" y2="387" stroke="#555" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="244" y1="387" x2="244" y2="436" stroke="#555" stroke-width="1.5"/>
+  <line x1="240" y1="387" x2="248" y2="387" stroke="#555" stroke-width="1.5"/>
+  <line x1="240" y1="436" x2="248" y2="436" stroke="#555" stroke-width="1.5"/>
+
+  <!-- Notes -->
+  <text x="252" y="94" font-size="12" fill="#9a5a00">snap target at top 1px</text>
+  <text x="252" y="110" font-size="12" fill="#9a5a00">(scroll-snap-align: start)</text>
+
+  <text x="252" y="236" font-size="12" fill="#333">As the bar collapses,</text>
+  <text x="252" y="252" font-size="12" fill="#333">the viewport grows into</text>
+  <text x="252" y="268" font-size="12" fill="#333">the overflow below, and</text>
+  <text x="252" y="284" font-size="12" fill="#333">the document scrolls by</text>
+  <text x="252" y="300" font-size="12" fill="#333">about 1px: 1px of scroll</text>
+  <text x="252" y="316" font-size="12" fill="#333">range is all that is left.</text>
+
+  <text x="254" y="408" font-size="12" fill="#333">overflow while the bar</text>
+  <text x="254" y="424" font-size="12" fill="#333">shows: its height + 1px</text>
+
+  <text x="24" y="506" font-size="12" fill="#333">proximity, because Chrome does not collapse the bar under</text>
+  <text x="24" y="522" font-size="12" fill="#333">mandatory. A longer spacer would keep scrolling the page</text>
+  <text x="24" y="538" font-size="12" fill="#333">after the bar is gone. (Not to scale; 1px is drawn as 1px.)</text>
+
+  <!-- ============ iOS ============ -->
+  <text x="424" y="30" font-size="16" font-weight="600" fill="#222">iOS</text>
+  <text x="424" y="52" font-size="13" fill="#333">&lt;html&gt;: scroll-snap-type: y mandatory</text>
+  <text x="424" y="70" font-size="13" fill="#333">spacer: height 10000px, snap target at 5000px</text>
+
+  <!-- Spacer, axis broken twice -->
+  <rect x="490" y="96" width="40" height="360" fill="url(#spacer)" stroke="#e08a00" stroke-width="2"/>
+  <rect x="484" y="190" width="52" height="12" fill="#ffffff"/>
+  <line x1="484" y1="194" x2="536" y2="186" stroke="#e08a00" stroke-width="2"/>
+  <line x1="484" y1="206" x2="536" y2="198" stroke="#e08a00" stroke-width="2"/>
+  <rect x="484" y="356" width="52" height="12" fill="#ffffff"/>
+  <line x1="484" y1="360" x2="536" y2="352" stroke="#e08a00" stroke-width="2"/>
+  <line x1="484" y1="372" x2="536" y2="364" stroke="#e08a00" stroke-width="2"/>
+  <text x="510" y="475" text-anchor="middle" font-size="12" fill="#9a5a00">spacer</text>
+
+  <!-- Ticks -->
+  <text x="480" y="101" text-anchor="end" font-size="12" fill="#555">0</text>
+  <text x="480" y="245" text-anchor="end" font-size="12" fill="#555">5000px</text>
+  <text x="480" y="461" text-anchor="end" font-size="12" fill="#555">10000px</text>
+
+  <!-- Snap target at 5000px -->
+  <line x1="484" y1="240" x2="612" y2="240" stroke="#e08a00" stroke-width="2"/>
+  <circle cx="484" cy="240" r="3.5" fill="#e08a00"/>
+
+  <!-- Viewport parked on it -->
+  <rect x="548" y="241" width="56" height="100" fill="#2f80ed" fill-opacity="0.18" stroke="#2f80ed" stroke-width="2"/>
+  <text x="576" y="295" text-anchor="middle" font-size="12" fill="#1c5fb8">viewport</text>
+
+  <!-- Distances to the edges -->
+  <line x1="576" y1="234" x2="576" y2="104" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="576" y1="347" x2="576" y2="448" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Notes -->
+  <text x="620" y="101" font-size="12" fill="#333">Top edge, 5000px up:</text>
+  <text x="620" y="117" font-size="12" fill="#333">pull-to-refresh and</text>
+  <text x="620" y="133" font-size="12" fill="#333">rubber-banding out</text>
+  <text x="620" y="149" font-size="12" fill="#333">of reach</text>
+
+  <text x="620" y="236" font-size="12" fill="#9a5a00">snap target</text>
+  <text x="620" y="252" font-size="12" fill="#9a5a00">(scroll-snap-align:</text>
+  <text x="620" y="268" font-size="12" fill="#9a5a00">start): the viewport</text>
+  <text x="620" y="284" font-size="12" fill="#9a5a00">is parked on it</text>
+
+  <text x="620" y="398" font-size="12" fill="#333">Bottom edge, 5000px</text>
+  <text x="620" y="414" font-size="12" fill="#333">below the snap target:</text>
+  <text x="620" y="430" font-size="12" fill="#333">out of reach as well</text>
+
+  <text x="424" y="506" font-size="12" fill="#333">mandatory: a scroll always comes to rest on the snap target</text>
+  <text x="424" y="522" font-size="12" fill="#333">again, which cuts Safari's momentum scrolling short.</text>
+  <text x="424" y="538" font-size="12" fill="#333">overscroll-behavior does not prevent pull-to-refresh and</text>
+  <text x="424" y="554" font-size="12" fill="#333">rubber-banding there. (Not to scale.)</text>
+</svg>

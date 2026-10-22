@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1c5fb8"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="800" fill="#ffffff"/>
+
+  <!-- Source -->
+  <rect x="150" y="16" width="500" height="40" rx="8" fill="#f3f3f3" stroke="#888" stroke-width="1.5"/>
+  <text x="400" y="41" text-anchor="middle" font-size="14" font-weight="600" fill="#222">A finger, or a pen touching the screen, on the Flutter view</text>
+
+  <line x1="200" y1="56" x2="200" y2="90" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="600" y1="56" x2="600" y2="90" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- B: what the browser fires -->
+  <rect x="20" y="96" width="360" height="100" rx="8" fill="#f3f3f3" stroke="#888" stroke-width="1.5"/>
+  <text x="36" y="120" font-size="13" font-weight="600" fill="#222">The browser's Pointer Events</text>
+  <text x="36" y="140" font-size="12" fill="#333">pointerdown, pointermove, pointerup, pointercancel.</text>
+  <text x="36" y="158" font-size="12" fill="#333">Under touch-action: pan-y the browser cancels them</text>
+  <text x="36" y="176" font-size="12" fill="#333">once it takes a vertical drag as a scroll.</text>
+
+  <rect x="420" y="96" width="360" height="100" rx="8" fill="#f3f3f3" stroke="#888" stroke-width="1.5"/>
+  <text x="436" y="120" font-size="13" font-weight="600" fill="#222">Touch Events and pointerrawupdate</text>
+  <text x="436" y="140" font-size="12" fill="#333">touchstart on &lt;flutter-view&gt;; touchmove, touchend and</text>
+  <text x="436" y="158" font-size="12" fill="#333">touchcancel on the element the contact started on;</text>
+  <text x="436" y="176" font-size="12" fill="#333">pointerrawupdate on window. They keep coming in a drag.</text>
+
+  <line x1="200" y1="196" x2="200" y2="220" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="600" y1="196" x2="600" y2="220" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- C -->
+  <rect x="20" y="226" width="360" height="80" rx="8" fill="#f3f3f3" stroke="#888" stroke-width="1.5"/>
+  <text x="36" y="250" font-size="13" font-weight="600" fill="#222">Their targets have them as usual</text>
+  <text x="36" y="270" font-size="12" fill="#333">The elements in the view they target, platform views</text>
+  <text x="36" y="288" font-size="12" fill="#333">and text fields included, run their own listeners.</text>
+
+  <rect x="420" y="226" width="360" height="80" rx="8" fill="#eef4fd" stroke="#2f80ed" stroke-width="1.5"/>
+  <text x="436" y="250" font-size="13" font-weight="600" fill="#1c5fb8">TouchInputSource rebuilds the contact</text>
+  <text x="436" y="270" font-size="12" fill="#333">Down, up and cancel from Touch Events. Movement from</text>
+  <text x="436" y="288" font-size="12" fill="#333">pointerrawupdate with one finger down, else touchmove.</text>
+
+  <line x1="600" y1="306" x2="600" y2="330" stroke="#1c5fb8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- D -->
+  <rect x="420" y="336" width="360" height="100" rx="8" fill="#eef4fd" stroke="#2f80ed" stroke-width="1.5"/>
+  <text x="436" y="360" font-size="13" font-weight="600" fill="#1c5fb8">PointerInjector dispatches synthetic Pointer Events</text>
+  <text x="436" y="380" font-size="12" fill="#333">pointerType touch, marked as injected, at the element</text>
+  <text x="436" y="398" font-size="12" fill="#333">the contact started on (&lt;flutter-view&gt; once it has left</text>
+  <text x="436" y="416" font-size="12" fill="#333">the DOM, &lt;flt-glass-pane&gt; inside a platform view).</text>
+
+  <!-- E: interceptor band -->
+  <rect x="20" y="466" width="760" height="96" rx="8" fill="#eef4fd" stroke="#2f80ed" stroke-width="1.5"/>
+  <text x="400" y="488" text-anchor="middle" font-size="13" font-weight="600" fill="#1c5fb8">TouchInterceptor</text>
+  <text x="216" y="512" font-size="12" fill="#333">withholds the browser's contact events</text>
+  <text x="216" y="528" font-size="12" fill="#333">(stopImmediatePropagation)</text>
+  <text x="616" y="512" font-size="12" fill="#333">lets the injected</text>
+  <text x="616" y="528" font-size="12" fill="#333">events through</text>
+  <text x="400" y="552" text-anchor="middle" font-size="11" fill="#555">on each child of &lt;flutter-view&gt; (bubble phase), and on window (capture phase) for events aimed at &lt;flutter-view&gt;</text>
+
+  <!-- Left lane: stopped -->
+  <line x1="200" y1="306" x2="200" y2="514" stroke="#555" stroke-width="2"/>
+  <line x1="186" y1="516" x2="214" y2="516" stroke="#c62828" stroke-width="4"/>
+  <text x="200" y="590" text-anchor="middle" font-size="12" fill="#c62828">The browser's own contact events</text>
+  <text x="200" y="606" text-anchor="middle" font-size="12" fill="#c62828">never reach PointerBinding.</text>
+
+  <!-- Right lane: passes -->
+  <line x1="600" y1="436" x2="600" y2="586" stroke="#1c5fb8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- F: engine -->
+  <rect x="420" y="592" width="360" height="80" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="436" y="616" font-size="13" font-weight="600" fill="#1b5e20">PointerBinding (engine) converts them as usual</text>
+  <text x="436" y="636" font-size="12" fill="#333">so its click debouncing, focus handling and</text>
+  <text x="436" y="654" font-size="12" fill="#333">accessibility bookkeeping work unchanged.</text>
+
+  <line x1="600" y1="672" x2="600" y2="696" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="420" y="702" width="360" height="36" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="600" y="725" text-anchor="middle" font-size="13" fill="#1b5e20">The app's gestures and scroll views</text>
+
+  <!-- Footnotes -->
+  <text x="20" y="770" font-size="12" fill="#555">Not withheld: mouse events, and those of a hovering pen, which fires no Touch Events.</text>
+  <text x="20" y="788" font-size="12" fill="#555">The same vertical drag also scrolls the document, which collapses the address bar.</text>
+</svg>

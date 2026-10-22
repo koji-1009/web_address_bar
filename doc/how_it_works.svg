@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.12" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="0.88" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="docfade" maskContentUnits="objectBoundingBox">
+      <rect width="1" height="1" fill="url(#fade)"/>
+    </mask>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <marker id="arrow-white" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ffffff"/>
+    </marker>
+    <marker id="arrow-doc" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9a5a00"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="600" fill="#ffffff"/>
+
+  <!-- Left: bar shown -->
+  <text x="160" y="28" text-anchor="middle" font-size="16" font-weight="600" fill="#222">Address bar shown</text>
+
+  <!-- Document, behind the phone -->
+  <g mask="url(#docfade)">
+    <rect x="88" y="40" width="200" height="424" fill="#fff4e0" stroke="#e08a00" stroke-width="2" stroke-dasharray="6 4"/>
+  </g>
+  <text transform="translate(279 252) rotate(90)" text-anchor="middle" font-size="13" fill="#9a5a00">document</text>
+
+  <!-- Phone -->
+  <rect x="60" y="56" width="200" height="392" rx="24" fill="#ffffff" stroke="#333" stroke-width="3"/>
+  <rect x="66" y="62" width="188" height="42" rx="16" fill="#d5d9df"/>
+  <rect x="80" y="72" width="160" height="22" rx="11" fill="#ffffff"/>
+  <text x="160" y="88" text-anchor="middle" font-size="12" fill="#666">example.com</text>
+  <rect x="66" y="108" width="188" height="334" rx="6" fill="#2f80ed"/>
+  <text x="160" y="196" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">Flutter view</text>
+  <text x="160" y="216" text-anchor="middle" font-size="12" fill="#ffffff">&lt;flutter-view&gt; in &lt;body&gt;,</text>
+  <text x="160" y="232" text-anchor="middle" font-size="12" fill="#ffffff">position: fixed (by the engine)</text>
+  <!-- Finger and drag -->
+  <line x1="160" y1="392" x2="160" y2="290" stroke="#ffffff" stroke-width="2.5" marker-end="url(#arrow-white)"/>
+  <circle cx="160" cy="400" r="11" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+  <text x="172" y="344" font-size="12" fill="#ffffff">vertical drag</text>
+
+  <!-- Transition -->
+  <line x1="302" y1="252" x2="396" y2="252" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="350" y="200" text-anchor="middle" font-size="12" fill="#333">the browser</text>
+  <text x="350" y="216" text-anchor="middle" font-size="12" fill="#333">scrolls the</text>
+  <text x="350" y="232" text-anchor="middle" font-size="12" fill="#333">document</text>
+  <text x="350" y="276" text-anchor="middle" font-size="12" fill="#333">and collapses</text>
+  <text x="350" y="292" text-anchor="middle" font-size="12" fill="#333">its address bar</text>
+
+  <!-- Right: bar collapsed -->
+  <text x="520" y="28" text-anchor="middle" font-size="16" font-weight="600" fill="#222">Address bar collapsed</text>
+
+  <!-- Document, behind the phone -->
+  <g mask="url(#docfade)">
+    <rect x="448" y="40" width="200" height="424" fill="#fff4e0" stroke="#e08a00" stroke-width="2" stroke-dasharray="6 4"/>
+  </g>
+  <text transform="translate(639 252) rotate(90)" text-anchor="middle" font-size="13" fill="#9a5a00">document</text>
+
+  <!-- Phone -->
+  <rect x="420" y="56" width="200" height="392" rx="24" fill="#ffffff" stroke="#333" stroke-width="3"/>
+  <rect x="426" y="62" width="188" height="12" rx="6" fill="#d5d9df"/>
+  <rect x="426" y="78" width="188" height="364" rx="6" fill="#2f80ed"/>
+  <text x="520" y="196" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">Flutter view</text>
+  <text x="520" y="216" text-anchor="middle" font-size="12" fill="#ffffff">still fixed to the viewport,</text>
+  <text x="520" y="232" text-anchor="middle" font-size="12" fill="#ffffff">resized by the engine</text>
+  <text x="520" y="248" text-anchor="middle" font-size="12" fill="#ffffff">to the grown viewport</text>
+
+  <!-- Document scrolled -->
+  <line x1="666" y1="300" x2="666" y2="210" stroke="#9a5a00" stroke-width="2" marker-end="url(#arrow-doc)"/>
+  <text x="678" y="226" font-size="12" fill="#9a5a00">the document</text>
+  <text x="678" y="242" font-size="12" fill="#9a5a00">scrolled under</text>
+  <text x="678" y="258" font-size="12" fill="#9a5a00">the view: about</text>
+  <text x="678" y="274" font-size="12" fill="#9a5a00">1px on Android,</text>
+  <text x="678" y="290" font-size="12" fill="#9a5a00">not the bar's</text>
+  <text x="678" y="306" font-size="12" fill="#9a5a00">height (scroll</text>
+  <text x="678" y="322" font-size="12" fill="#9a5a00">range per</text>
+  <text x="678" y="338" font-size="12" fill="#9a5a00">platform: below)</text>
+
+  <!-- Legend -->
+  <rect x="40" y="488" width="16" height="16" fill="#fff4e0" stroke="#e08a00" stroke-width="2" stroke-dasharray="4 3"/>
+  <text x="66" y="501" font-size="13" fill="#333">Document: a spacer under &lt;html&gt; makes it taller than the viewport, and &lt;body&gt; gets</text>
+  <text x="66" y="519" font-size="13" fill="#333">touch-action: pan-y and overflow-y: auto, so the browser scrolls it on a vertical drag.</text>
+  <rect x="40" y="532" width="16" height="16" fill="#2f80ed"/>
+  <text x="66" y="545" font-size="13" fill="#333">Flutter view: in &lt;body&gt;, which the engine made position: fixed, so it stays on the viewport</text>
+  <text x="66" y="563" font-size="13" fill="#333">and floats over the document while the document scrolls under it.</text>
+  <text x="40" y="589" font-size="13" fill="#333">The browser collapses its address bar as the document scrolls; the engine resizes the view to the grown viewport.</text>
+</svg>
