@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import '../web_address_bar.dart';
 
 /// See [WebAddressBar.enable]. Does nothing.
-void enable() {}
+void enable(Set<TargetPlatform> platforms) {}
 
 /// See [WebAddressBar.disable]. Does nothing.
 void disable() {}

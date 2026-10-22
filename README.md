@@ -31,7 +31,7 @@ void main() {
 }
 ```
 
-`enable` can be called before or after `runApp`, and does nothing outside Android and iOS browsers, when Flutter does not own the whole page (a custom `hostElement`, multi-view), or on platforms other than the web. `WebAddressBar.isActive` tells whether it took effect; in debug builds the reason it did not is printed. `WebAddressBar.disable()` undoes everything.
+`enable` can be called before or after `runApp`. It takes effect in browsers on Android and iOS (iPadOS included); pass `platforms` to limit it to one of them, for example `WebAddressBar.enable(platforms: {TargetPlatform.iOS})`. It does nothing outside those browsers, when Flutter does not own the whole page (a custom `hostElement`, multi-view), or on platforms other than the web. `WebAddressBar.isActive` tells whether it took effect; in debug builds the reason it did not is printed. `WebAddressBar.disable()` undoes everything.
 
 `WebAddressBar.collapsedExtent` reports how much of the viewport the browser's UI covers right now, in logical pixels: the bar's height while it shows, 0 once it has collapsed.
 

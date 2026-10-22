@@ -6,6 +6,7 @@ import 'dart:js_interop_unsafe';
 import 'dart:ui' as ui;
 import 'dart:ui_web' as ui_web;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:web/web.dart' as web;
 import 'package:web_address_bar/src/web/controller.dart';
@@ -97,6 +98,41 @@ void main() {
 
       expect(WebAddressBar.isActive, isTrue);
       expect(environments.single.os, MobileOs.iOS);
+    });
+
+    test('does nothing on a platform it is not enabled for', () {
+      ui_web.browser.debugOperatingSystemOverride =
+          ui_web.OperatingSystem.android;
+
+      WebAddressBar.enable(
+        platforms: const <TargetPlatform>{TargetPlatform.iOS},
+      );
+
+      expect(WebAddressBar.isActive, isFalse);
+      expect(
+        controller.debugLastUnsupported?.reason,
+        contains('not enabled for android'),
+      );
+      expect(log, isEmpty);
+    });
+
+    test('takes effect on a platform it is enabled for', () {
+      ui_web.browser.debugOperatingSystemOverride = ui_web.OperatingSystem.iOs;
+
+      WebAddressBar.enable(
+        platforms: const <TargetPlatform>{TargetPlatform.iOS},
+      );
+
+      expect(WebAddressBar.isActive, isTrue);
+    });
+
+    test('rejects platforms it does not support', () {
+      expect(
+        () => WebAddressBar.enable(
+          platforms: const <TargetPlatform>{TargetPlatform.macOS},
+        ),
+        throwsAssertionError,
+      );
     });
 
     group('stands back when the page already scrolls itself', () {

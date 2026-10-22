@@ -2,6 +2,7 @@ import 'dart:js_interop';
 import 'dart:ui' as ui;
 import 'dart:ui_web' as ui_web;
 
+import 'package:flutter/foundation.dart';
 import 'package:web/web.dart' as web;
 
 /// The mobile operating systems this package takes effect on.
@@ -41,22 +42,29 @@ final class UnsupportedEnvironment extends EnvironmentCheck {
 
 /// Decides whether `WebAddressBar.enable` can take effect on this page.
 ///
-/// Checks, in order: the operating system; that Flutter owns the whole page
+/// Checks, in order: the operating system, which has to be Android or iOS and
+/// one of [platforms]; that Flutter owns the whole page
 /// (an implicit view hosted by `<body>`, which rules out multi-view and a
 /// custom `hostElement`); that the DOM has the shape this package was written
 /// against; and that the page does not already let the browser scroll it,
 /// which would mean another library, or a future engine, does the same job.
-EnvironmentCheck checkEnvironment() {
+EnvironmentCheck checkEnvironment(Set<TargetPlatform> platforms) {
   final MobileOs os;
+  final TargetPlatform platform;
   switch (ui_web.browser.operatingSystem) {
     case ui_web.OperatingSystem.android:
       os = MobileOs.android;
+      platform = TargetPlatform.android;
     case ui_web.OperatingSystem.iOs:
       os = MobileOs.iOS;
+      platform = TargetPlatform.iOS;
     case final ui_web.OperatingSystem other:
       return UnsupportedEnvironment(
         'not a mobile browser (operating system: ${other.name})',
       );
+  }
+  if (!platforms.contains(platform)) {
+    return UnsupportedEnvironment('not enabled for ${platform.name}');
   }
 
   final ui.FlutterView? view = ui.PlatformDispatcher.instance.implicitView;

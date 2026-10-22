@@ -20,7 +20,12 @@ abstract final class WebAddressBar {
   /// Starts letting the address bar collapse.
   ///
   /// Can be called before or after `runApp`. Calling it again while active does
-  /// nothing.
+  /// nothing, even with different [platforms]; call [disable] first.
+  ///
+  /// [platforms] are the operating systems whose browsers it takes effect in:
+  /// [TargetPlatform.android], [TargetPlatform.iOS] (iPadOS included), or
+  /// both, the default. Other platforms are not supported: desktop browsers do
+  /// not collapse their toolbars on scroll.
   ///
   /// Do not call it while a finger is on the screen, such as from `onTapDown`,
   /// `onPanStart` or `onLongPress`. A touch that started before [enable] is
@@ -28,11 +33,24 @@ abstract final class WebAddressBar {
   /// the pointer down until the page is reloaded. Callbacks that run once the
   /// finger has lifted, such as `onTap` and `onChanged`, are fine.
   ///
-  /// Does nothing, and leaves [isActive] false, outside Android and iOS, when
+  /// Does nothing, and leaves [isActive] false, outside [platforms], when
   /// Flutter does not own the whole page, when the page structure is not the
   /// one this package was written against, or when the page already scrolls
   /// itself. The reason is printed in debug builds.
-  static void enable() => platform.enable();
+  static void enable({Set<TargetPlatform> platforms = supportedPlatforms}) {
+    assert(
+      supportedPlatforms.containsAll(platforms),
+      'WebAddressBar supports ${supportedPlatforms.map((p) => p.name)} only, '
+      'not ${platforms.difference(supportedPlatforms).map((p) => p.name)}',
+    );
+    platform.enable(platforms);
+  }
+
+  /// The platforms [enable] can take effect on, and its default.
+  static const Set<TargetPlatform> supportedPlatforms = <TargetPlatform>{
+    TargetPlatform.android,
+    TargetPlatform.iOS,
+  };
 
   /// Undoes everything [enable] did: the styles, the elements it added and the
   /// event listeners. Touches still down are cancelled.

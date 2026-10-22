@@ -16,7 +16,8 @@ import 'touch_interceptor.dart';
 import 'viewport_metrics.dart';
 
 /// See [WebAddressBar.enable].
-void enable() => WebAddressBarController.instance.enable();
+void enable(Set<TargetPlatform> platforms) =>
+    WebAddressBarController.instance.enable(platforms);
 
 /// See [WebAddressBar.disable].
 void disable() => WebAddressBarController.instance.disable();
@@ -102,13 +103,13 @@ class WebAddressBarController {
   static const String _hotRestartTeardownKey = r'$webAddressBarTeardown';
 
   /// See `WebAddressBar.enable`.
-  void enable() {
+  void enable(Set<TargetPlatform> platforms) {
     if (isActive) {
       return;
     }
     _tearDownPreviousRun();
 
-    final EnvironmentCheck check = checkEnvironment();
+    final EnvironmentCheck check = checkEnvironment(platforms);
     switch (check) {
       case UnsupportedEnvironment():
         debugLastUnsupported = check;
