@@ -1,0 +1,25 @@
+name: web_address_bar_example
+description: The test app of package:web_address_bar.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: ^1.8.0
+  web: ^1.0.0
+  web_address_bar:
+    path: ../
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
