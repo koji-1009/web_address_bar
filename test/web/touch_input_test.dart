@@ -54,7 +54,7 @@ void _dispatchTouch(
   target.dispatchEvent(web.TouchEvent(type, init as web.TouchEventInit));
 }
 
-void _dispatchPointer(
+web.PointerEvent _dispatchPointer(
   web.EventTarget target,
   String type, {
   String pointerType = 'touch',
@@ -62,6 +62,7 @@ void _dispatchPointer(
   double x = 10,
   double y = 10,
   bool? down,
+  int? buttons,
 }) {
   down ??=
       type == 'pointerdown' ||
@@ -80,9 +81,14 @@ void _dispatchPointer(
       'button'.toJS,
       (type == 'pointermove' || type == 'pointerrawupdate' ? -1 : 0).toJS,
     )
-    ..setProperty('buttons'.toJS, (down ? 1 : 0).toJS)
+    ..setProperty('buttons'.toJS, (buttons ?? (down ? 1 : 0)).toJS)
     ..setProperty('pressure'.toJS, (down ? 0.5 : 0).toJS);
-  target.dispatchEvent(web.PointerEvent(type, init as web.PointerEventInit));
+  final web.PointerEvent event = web.PointerEvent(
+    type,
+    init as web.PointerEventInit,
+  );
+  target.dispatchEvent(event);
+  return event;
 }
 
 void main() {
@@ -189,6 +195,13 @@ void main() {
     },
   );
 
+  test('a touch pointerdown withheld at the root does not move focus', () {
+    final web.PointerEvent down = _dispatchPointer(_root, 'pointerdown');
+    _dispatchPointer(_root, 'pointerup');
+
+    expect(down.defaultPrevented, isTrue);
+  });
+
   test('mouse pointer events still go to PointerBinding', () {
     _dispatchPointer(_root, 'pointerdown', pointerType: 'mouse');
 
@@ -275,6 +288,31 @@ void main() {
       );
 
       expect(data.last.change, ui.PointerChange.hover);
+    });
+
+    test('pressing only the barrel button while hovering goes to '
+        'PointerBinding', () {
+      _dispatchPointer(
+        _root,
+        'pointerdown',
+        pointerType: 'pen',
+        pointerId: 8,
+        down: false,
+        buttons: 2,
+      );
+      addTearDown(
+        () => _dispatchPointer(
+          _root,
+          'pointerup',
+          pointerType: 'pen',
+          pointerId: 8,
+          down: false,
+        ),
+      );
+
+      expect(data, isNotEmpty);
+      expect(data.last.change, ui.PointerChange.down);
+      expect(data.last.kind, ui.PointerDeviceKind.stylus);
     });
   });
 
