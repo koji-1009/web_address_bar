@@ -64,7 +64,6 @@ Based on [flutter/flutter#184281](https://github.com/flutter/flutter/pull/184281
 
 ## Limitations
 
-- In-app browser sheets that rely on the page's scroll position are not handled: the page's scroll position does not follow the app's content.
 - The browser does not report a status bar tap. It is inferred from a scroll toward the top with no finger on the screen.
 - Touch input carries no pressure or tilt. A pen on the screen arrives as a touch; a hovering pen is reported as a stylus as usual. The movement of a pen, or of more than one finger, follows the browser's throttled `touchmove`. Apps that need pressure or tilt should not enable the package.
 - Pull-to-refresh of the page is unavailable by design.
