@@ -78,7 +78,3 @@ jobs:
 
       - name: End-to-end (headless Chrome, Android emulation, WebAssembly)
         run: node example/tool/example_cdp.mjs --check --chrome=/usr/bin/google-chrome
-
-      - name: Publish dry run
-        if: matrix.channel == 'beta'
-        run: dart pub publish --dry-run

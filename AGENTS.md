@@ -36,8 +36,6 @@ fvm flutter build web --wasm
 node tool/example_cdp.mjs --check
 ```
 
-CI also runs `dart pub publish --dry-run`.
-
 ## Running the example on a phone
 
 From `example/`, serve it on every network interface of the machine and open `http://<machine's IP>:8080/` on the phone:
