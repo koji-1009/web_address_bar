@@ -17,11 +17,10 @@ import 'environment.dart';
 /// at either end (`overscroll-behavior` does not prevent them on iOS). The
 /// snap points differ per platform:
 ///
-/// * Android: two, 2px apart around the middle. Chrome scrolls the page some
+/// * Android: two, in the middle and 1px below it. Chrome scrolls the page some
 ///   way before it starts hiding its bar, so the range has to be long, and
 ///   after a scroll it shows the bar again if the page then moves back up. With
-///   a point on either side, a scroll comes to rest on the one in the direction
-///   it went.
+///   two points, a scroll comes to rest on the one in the direction it went.
 /// * iOS: one, in the middle, which also cuts Safari's momentum scrolling
 ///   short.
 ///
@@ -55,7 +54,7 @@ class DocumentScroller implements SessionPart {
     switch (os) {
       case MobileOs.android:
         spacer
-          ..append(_createSnapTarget(middle - 1))
+          ..append(_createSnapTarget(middle))
           ..append(_createSnapTarget(middle + 1));
       case MobileOs.iOS:
         spacer.append(_createSnapTarget(middle));

@@ -37,7 +37,7 @@ void main() {
     });
 
     test(
-      'snaps mandatorily to either side of the middle of a 10000px spacer',
+      'snaps mandatorily to the middle of a 10000px spacer and 1px below it',
       () {
         expect(_html.style.getPropertyValue('scroll-snap-type'), 'y mandatory');
         final web.HTMLElement spacer = _findSpacer()!;
@@ -49,7 +49,7 @@ void main() {
         ];
         expect(
           <String>[for (final t in targets) t.style.top],
-          <String>['4999px', '5001px'],
+          <String>['5000px', '5001px'],
         );
         for (final web.HTMLElement target in targets) {
           expect(target.localName, DocumentScroller.snapTargetTagName);
