@@ -6,7 +6,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:web_address_bar_example/main.dart';
 import 'package:web_address_bar_example/screens/basic_vertical_list.dart';
 import 'package:web_address_bar_example/screens/collapsed_extent.dart';
-import 'package:web_address_bar_example/screens/expanding_app_bar.dart';
 import 'package:web_address_bar_example/screens/floating_app_bar.dart';
 import 'package:web_address_bar_example/screens/interactive_widgets.dart';
 import 'package:web_address_bar_example/screens/large_app_bar.dart';
@@ -29,7 +28,6 @@ void main() {
       InteractiveWidgetsTest.title,
       TapOnlyTest.title,
       LargeAppBarTest.title,
-      ExpandingAppBarTest.title,
       FloatingAppBarTest.title,
       TabsTest.title,
       RefreshTest.title,

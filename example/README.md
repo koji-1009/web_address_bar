@@ -26,7 +26,7 @@ python3 -m http.server 8080 --bind 0.0.0.0 -d build/web
 
 Open `http://<your machine>:8080/` on an Android or iOS phone. For Chrome on Android in a secure context (where `pointerrawupdate` is available), run `adb reverse tcp:8080 tcp:8080` and open `http://localhost:8080/`.
 
-Each screen has its own URL, `#/basic|nested|interactive|tap-only|large-app-bar|expanding-app-bar|floating-app-bar|tabs|refresh|pinch|platform-view|runtime-toggle|collapsed-extent|long-drag`, so a reload keeps it open.
+Each screen has its own URL, `#/basic|nested|interactive|tap-only|large-app-bar|floating-app-bar|tabs|refresh|pinch|platform-view|runtime-toggle|collapsed-extent|long-drag`, so a reload keeps it open.
 
 Query parameters, before the `#`:
 
@@ -44,7 +44,6 @@ Reload the page before each check.
 | Interactive widgets | Each tap counts once; the slider drags; the switch toggles; the text field takes input with the keyboard up; a long press shows a SnackBar. With a pen on the screen, taps count once and the slider drags. |
 | Tap only | A drag collapses the bar even though nothing scrolls; each tap on the box counts once. |
 | Large app bar | Dragging up collapses the address bar and folds the large title into the toolbar; a status bar tap on iOS brings both back. |
-| Expanding app bar | The colored background reaches under the status bar; dragging up collapses the address bar and the flexible space. |
 | Floating app bar | The app bar scrolls away with the list and snaps back on any downward drag, alongside the address bar. |
 | Tabs | After scrolling both tabs, a status bar tap on iOS scrolls only the tab shown to the top. |
 | Refresh indicator | Pulling down at the top of the list shows the indicator and refreshes once; the page does not reload. |
