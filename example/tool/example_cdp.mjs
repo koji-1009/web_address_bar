@@ -5,9 +5,10 @@
 //
 // Usage: node tool/example_cdp.mjs [--chrome=path] [--check]
 //
-// With --check, exits with status 1 unless every scenario ends with no
-// pointer down, an idle list, the package active (where enabled) and no page
-// exception, for CI.
+// With --check, exits with status 1 unless every scenario ends with the drag
+// having reached the app and no pointer down, an idle list, the package active (where enabled), the document
+// on the expected snap target, a tap reaching the app, the screen still open
+// after a reload and no page exception, for CI.
 //
 // No npm dependencies: Node's built-in fetch and WebSocket.
 
@@ -115,7 +116,8 @@ const androidUa =
   'Mozilla/5.0 (Linux; Android 15; Pixel 9) AppleWebKit/537.36 (KHTML, like Gecko) ' +
   'Chrome/156.0.0.0 Mobile Safari/537.36';
 
-async function openPage(query) {
+// Opens the app at `/${page}`, such as `?enable=0#/long-drag`.
+async function openPage(page) {
   const { targetId } = await send('Target.createTarget', { url: 'about:blank' });
   const { sessionId } = await send('Target.attachToTarget', { targetId, flatten: true });
   pageErrors.set(sessionId, []);
@@ -130,7 +132,7 @@ async function openPage(query) {
   await s('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 5 });
   await s('Page.enable');
   await s('Runtime.enable');
-  await s('Page.navigate', { url: `http://127.0.0.1:${httpPort}/?${query}` });
+  await s('Page.navigate', { url: `http://127.0.0.1:${httpPort}/${page}` });
   for (let i = 0; i < 200; i++) {
     const r = await report(s);
     if (r) {
@@ -139,7 +141,7 @@ async function openPage(query) {
     }
     await sleep(100);
   }
-  throw new Error(`page did not become ready for ${query}`);
+  throw new Error(`page did not become ready for ${page}`);
 }
 
 async function report(s) {
@@ -191,10 +193,36 @@ async function resize(s) {
   }
 }
 
+// One tap on the "Tap me" button of the interactive widgets screen.
+async function tap(s) {
+  const [x, y] = (await report(s)).tapTarget;
+  await touch(s, 'touchStart', x, y);
+  await sleep(50);
+  await touch(s, 'touchEnd');
+  await sleep(500);
+}
+
+// A tap, then a reload, which has to bring the same screen back with its tap
+// count reset.
+async function tapAndReload(s) {
+  await tap(s);
+  await s('Page.reload');
+  await sleep(500);
+  for (let i = 0; i < 200 && !(await report(s)); i++) {
+    await sleep(100);
+  }
+  await sleep(500);
+}
+
+// scrollTop is where the document rests afterwards: 0 without the package; with
+// it, the snap target in the middle (bar shown) or, after an upward drag, the
+// one 1px below it (bar hidden).
 const scenarios = [
-  { name: 'stock long drag', query: 'enable=0&screen=long-drag', run: longDrag, active: false },
-  { name: 'long drag', query: 'screen=long-drag', run: longDrag, active: true },
-  { name: 'collapsed extent', query: 'screen=collapsed-extent', run: resize, active: true },
+  { name: 'stock long drag', page: '?enable=0#/long-drag', run: longDrag, active: false, scrollTop: 0, pointerDowns: 1 },
+  { name: 'long drag', page: '#/long-drag', run: longDrag, active: true, scrollTop: 5001, pointerDowns: 1 },
+  { name: 'tap', page: '#/interactive', run: tap, active: true, scrollTop: 5000, tapCount: 1 },
+  { name: 'reload', page: '#/interactive', run: tapAndReload, active: true, scrollTop: 5000, tapCount: 0 },
+  { name: 'collapsed extent', page: '#/collapsed-extent', run: resize, active: true, scrollTop: 5000 },
 ];
 
 // What --check requires of a scenario's result.
@@ -205,15 +233,18 @@ function problems(scenario, result) {
   if ('pointersDown' in app && app.pointersDown !== 0) found.push(`pointersDown ${app.pointersDown}`);
   if ('listState' in app && app.listState !== 'idle') found.push(`listState ${app.listState}`);
   if ('isActive' in app && app.isActive !== scenario.active) found.push(`isActive ${app.isActive}`);
+  if ('tapCount' in scenario && app.tapCount !== scenario.tapCount) found.push(`tapCount ${app.tapCount}`);
+  if ('pointerDowns' in scenario && app.pointerDowns !== scenario.pointerDowns) found.push(`pointerDowns ${app.pointerDowns}`);
   const panning = result.bodyTouchAction === 'pan-y';
   if (panning !== scenario.active) found.push(`body touch-action ${result.bodyTouchAction}`);
+  if (result.documentScrollTop !== scenario.scrollTop) found.push(`document scrollTop ${result.documentScrollTop}`);
   return found;
 }
 
 const results = {};
 try {
   for (const scenario of scenarios) {
-    const { s, sessionId, targetId } = await openPage(scenario.query);
+    const { s, sessionId, targetId } = await openPage(scenario.page);
     await scenario.run(s);
     results[scenario.name] = {
       app: await report(s),

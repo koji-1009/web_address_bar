@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../automation.dart';
+
 class InteractiveWidgetsTest extends StatefulWidget {
   const InteractiveWidgetsTest({super.key});
 
@@ -14,6 +16,7 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
   bool _switchValue = false;
   int _tapCount = 0;
   final _textController = TextEditingController();
+  final _tapMe = GlobalKey();
 
   @override
   void dispose() {
@@ -21,8 +24,21 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
     super.dispose();
   }
 
+  /// Publishes where "Tap me" is, for the tap the end-to-end check makes.
+  void _publishTapTarget() {
+    final RenderBox? box =
+        _tapMe.currentContext?.findRenderObject() as RenderBox?;
+    if (box == null || !box.hasSize) return;
+    final Offset center = box.localToGlobal(box.size.center(Offset.zero));
+    publishAutomationState(<String, Object?>{
+      'tapTarget': <double>[center.dx, center.dy],
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    publishAutomationState(<String, Object?>{'tapCount': _tapCount});
+    WidgetsBinding.instance.addPostFrameCallback((_) => _publishTapTarget());
     return Scaffold(
       appBar: AppBar(title: const Text(InteractiveWidgetsTest.title)),
       body: ListView(
@@ -47,6 +63,7 @@ class _InteractiveWidgetsTestState extends State<InteractiveWidgetsTest> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FilledButton(
+                        key: _tapMe,
                         onPressed: () => setState(() => _tapCount++),
                         child: const Text('Tap me'),
                       ),

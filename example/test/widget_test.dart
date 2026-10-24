@@ -12,13 +12,18 @@ import 'package:web_address_bar_example/screens/interactive_widgets.dart';
 import 'package:web_address_bar_example/screens/large_app_bar.dart';
 import 'package:web_address_bar_example/screens/long_drag.dart';
 import 'package:web_address_bar_example/screens/nested_scroll.dart';
+import 'package:web_address_bar_example/screens/pinch.dart';
+import 'package:web_address_bar_example/screens/platform_view.dart';
+import 'package:web_address_bar_example/screens/refresh.dart';
+import 'package:web_address_bar_example/screens/runtime_toggle.dart';
+import 'package:web_address_bar_example/screens/tabs.dart';
 import 'package:web_address_bar_example/screens/tap_only.dart';
 
 void main() {
   testWidgets('the menu opens every test screen', (WidgetTester tester) async {
     await tester.pumpWidget(const WebScrollTestApp());
 
-    for (final String title in <String>[
+    const List<String> titles = <String>[
       BasicVerticalListTest.title,
       NestedScrollTest.title,
       InteractiveWidgetsTest.title,
@@ -26,9 +31,16 @@ void main() {
       LargeAppBarTest.title,
       ExpandingAppBarTest.title,
       FloatingAppBarTest.title,
+      TabsTest.title,
+      RefreshTest.title,
+      PinchTest.title,
+      PlatformViewTest.title,
+      RuntimeToggleTest.title,
       CollapsedExtentTest.title,
       LongDragTest.title,
-    ]) {
+    ];
+    expect(titles, hasLength(screens.length));
+    for (final String title in titles) {
       await tester.scrollUntilVisible(find.text(title), 100);
       await tester.tap(find.text(title));
       // Not pumpAndSettle: the long drag screen refreshes on a timer.

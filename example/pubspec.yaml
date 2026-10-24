@@ -8,8 +8,10 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
+  cupertino_icons: ^2.0.0
   flutter:
     sdk: flutter
+  go_router: ^18.1.1
   material_ui: ^1.8.0
   web: ^1.0.0
   web_address_bar:

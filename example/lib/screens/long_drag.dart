@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show PointerDeviceKind;
 
 import 'package:material_ui/material_ui.dart';
 import 'package:web/web.dart' as web;
@@ -23,6 +24,10 @@ class LongDragTest extends StatefulWidget {
 
 class _LongDragTestState extends State<LongDragTest> {
   final Set<int> _pointersDown = <int>{};
+
+  /// How many pointers have touched down, which shows the drag reached the app.
+  int _pointerDowns = 0;
+  PointerDeviceKind? _lastKind;
   String _listState = 'idle';
   late final Timer _timer;
 
@@ -62,13 +67,18 @@ class _LongDragTestState extends State<LongDragTest> {
         web.document.querySelector('flt-semantics-placeholder') != null;
     publishAutomationState(<String, Object?>{
       'pointersDown': _pointersDown.length,
+      'pointerDowns': _pointerDowns,
       'listState': _listState,
       'placeholder': placeholder,
     });
     return Listener(
       behavior: HitTestBehavior.translucent,
       onPointerDown: (PointerDownEvent event) {
-        setState(() => _pointersDown.add(event.pointer));
+        setState(() {
+          _pointersDown.add(event.pointer);
+          _pointerDowns++;
+          _lastKind = event.kind;
+        });
       },
       onPointerUp: (PointerUpEvent event) {
         setState(() => _pointersDown.remove(event.pointer));
@@ -87,7 +97,8 @@ class _LongDragTestState extends State<LongDragTest> {
                   : ColorScheme.of(context).tertiaryContainer,
               padding: const .all(8),
               child: Text(
-                'Pointers down: ${_pointersDown.length}\n'
+                'Pointers down: ${_pointersDown.length}'
+                ' (last: ${_lastKind?.name ?? '-'})\n'
                 'List: $_listState\n'
                 'Semantics placeholder: ${placeholder ? 'present' : 'removed'}',
               ),

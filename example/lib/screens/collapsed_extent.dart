@@ -50,6 +50,15 @@ class CollapsedExtentTest extends StatelessWidget {
               );
             },
           ),
+          const Padding(
+            padding: .symmetric(horizontal: 8),
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Focus to bring the keyboard up',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: 100,
