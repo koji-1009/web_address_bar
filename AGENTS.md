@@ -32,7 +32,11 @@ For a change that affects input or the page setup, also run the example's checks
 fvm flutter test --platform chrome
 fvm flutter build web --profile
 node tool/example_cdp.mjs --check
+fvm flutter build web --wasm
+node tool/example_cdp.mjs --check
 ```
+
+CI also runs `dart pub publish --dry-run` on stable.
 
 ## Running the example on a phone
 

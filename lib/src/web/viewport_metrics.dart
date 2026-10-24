@@ -22,7 +22,8 @@ typedef ViewportHeights = ({
 ///
 /// The bars cover at most the difference between the large and the small
 /// viewport. A visible area shorter than the small viewport is the on-screen
-/// keyboard, which is not counted. Heights that could not be measured (zero)
+/// keyboard, which is not counted: the bars are taken to be showing, as
+/// nothing tells whether they are. Heights that could not be measured (zero)
 /// give zero: "the bar is not showing" rather than "the bar covers
 /// everything".
 double computeCollapsedExtent(ViewportHeights heights) {

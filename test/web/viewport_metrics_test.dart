@@ -34,7 +34,7 @@ void main() {
       expect(computeCollapsedExtent((large: 800, small: 700, visible: 800)), 0);
     });
 
-    test('the keyboard is not counted', () {
+    test('the keyboard is not counted; the bar reads as showing', () {
       expect(
         computeCollapsedExtent((large: 800, small: 700, visible: 400)),
         100,
