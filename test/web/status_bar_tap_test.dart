@@ -202,6 +202,59 @@ void main() {
       expect(offsetOf(tester, 'first'), firstOffset);
     });
 
+    testWidgets('leaves the tabs that are not shown alone', (
+      WidgetTester tester,
+    ) async {
+      final ValueNotifier<int> tab = ValueNotifier<int>(0);
+      Widget tabNavigator(String name) => Navigator(
+        onGenerateRoute: (RouteSettings settings) => PageRouteBuilder<void>(
+          pageBuilder: (BuildContext context, _, _) => page(name),
+        ),
+      );
+      await tester.pumpWidget(
+        WidgetsApp(
+          color: const Color(0xFF000000),
+          builder: (BuildContext context, Widget? child) =>
+              WebAddressBarScrollToTop(child: child!),
+          pageRouteBuilder:
+              <T>(RouteSettings settings, WidgetBuilder builder) =>
+                  PageRouteBuilder<T>(
+                    settings: settings,
+                    pageBuilder: (BuildContext context, _, _) =>
+                        builder(context),
+                  ),
+          home: ValueListenableBuilder<int>(
+            valueListenable: tab,
+            builder: (BuildContext context, int index, _) => IndexedStack(
+              index: index,
+              children: <Widget>[tabNavigator('one'), tabNavigator('two')],
+            ),
+          ),
+        ),
+      );
+      await tester.drag(
+        find.byKey(const ValueKey<String>('one')),
+        const Offset(0, -2000),
+      );
+      await tester.pumpAndSettle();
+      tab.value = 1;
+      await tester.pumpAndSettle();
+      await tester.drag(
+        find.byKey(const ValueKey<String>('two')),
+        const Offset(0, -2000),
+      );
+      await tester.pumpAndSettle();
+      tab.value = 0;
+      await tester.pumpAndSettle();
+      final double twoOffset = offsetOf(tester, 'two');
+
+      WebAddressBarController.instance.statusBarTaps.notify();
+      await tester.pumpAndSettle();
+
+      expect(offsetOf(tester, 'one'), 0);
+      expect(offsetOf(tester, 'two'), twoOffset);
+    });
+
     testWidgets('stops listening when it is removed', (
       WidgetTester tester,
     ) async {

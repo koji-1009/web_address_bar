@@ -12,7 +12,8 @@ import '../web_address_bar.dart';
 /// taken over; this widget turns that into the scroll a native iOS app gets.
 /// It animates the [PrimaryScrollController] of the current route below it,
 /// the way `Scaffold` does on iOS. Routes that are not current, such as a page
-/// under a dialog, are left alone.
+/// under a dialog, and hidden ones, such as the tabs an [IndexedStack] does not
+/// show, are left alone.
 ///
 /// Put it above the `Navigator`, in the `builder` of `MaterialApp`:
 ///
@@ -56,14 +57,17 @@ class _WebAddressBarScrollToTopState extends State<WebAddressBarScrollToTop> {
   }
 
   /// The innermost [PrimaryScrollController] below this widget that belongs to
-  /// the current route and has a scroll view attached.
+  /// the current route, is visible and has a scroll view attached.
   ScrollController? _currentPrimaryScrollController() {
     ScrollController? found;
     void visit(Element element) {
       if (element.widget
           case PrimaryScrollController(:final ScrollController controller)
           when controller.hasClients &&
-              (ModalRoute.isCurrentOf(element) ?? false)) {
+              (ModalRoute.isCurrentOf(element) ?? false) &&
+              // Hidden subtrees, such as the tabs an IndexedStack does not
+              // show, stay mounted with their routes current.
+              Visibility.of(element)) {
         found = controller;
       }
       element.visitChildElements(visit);
