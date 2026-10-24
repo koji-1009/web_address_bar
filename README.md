@@ -1,5 +1,9 @@
 # web_address_bar
 
+[![pub package](https://img.shields.io/pub/v/web_address_bar.svg)](https://pub.dev/packages/web_address_bar)
+[![GitHub license](https://img.shields.io/github/license/koji-1009/web_address_bar)](https://github.com/koji-1009/web_address_bar/blob/main/LICENSE)
+[![CI](https://github.com/koji-1009/web_address_bar/actions/workflows/ci.yml/badge.svg)](https://github.com/koji-1009/web_address_bar/actions/workflows/ci.yml)
+
 Lets the mobile browser address bar collapse in full-page Flutter web apps on Android and iOS, while scrolling stays in Flutter's own scroll views.
 
 ## Why
@@ -70,7 +74,12 @@ Based on [flutter/flutter#184281](https://github.com/flutter/flutter/pull/184281
 
 ## Example
 
-Try it on a phone at <https://koji-1009.github.io/web_address_bar/>. [example/](example/) has test screens for lists, nested scrollables, interactive widgets, a page that does not scroll, sliver app bars, tabs, pull to refresh, pinch, a platform view, turning the package off and on, `collapsedExtent` and the long-drag repro of [flutter/flutter#194104](https://github.com/flutter/flutter/issues/194104), with what to check on a device.
+Try it on a phone:
+
+- JavaScript: <https://koji-1009.github.io/web_address_bar/>
+- WebAssembly: <https://koji-1009.github.io/web_address_bar/wasm/> (in Chrome; other browsers fall back to JavaScript)
+
+[example/](example/) has test screens for lists, nested scrollables, interactive widgets, a page that does not scroll, sliver app bars, tabs, pull to refresh, pinch, a platform view, turning the package off and on, `collapsedExtent` and the long-drag repro of [flutter/flutter#194104](https://github.com/flutter/flutter/issues/194104), with what to check on a device.
 
 ## License
 
