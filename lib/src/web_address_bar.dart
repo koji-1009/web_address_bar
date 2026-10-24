@@ -65,9 +65,8 @@ abstract final class WebAddressBar {
   /// measured, which reads as "the bar is not showing" rather than "the bar
   /// covers everything".
   ///
-  /// The engine resizes the Flutter view as the bar moves (on iOS, engines with
-  /// flutter/flutter#193744), so the view does not extend under the bar and
-  /// this is informational.
+  /// The engine resizes the Flutter view as the bar moves, so the view does not
+  /// extend under the bar and this is informational.
   static ValueListenable<double> get collapsedExtent =>
       platform.collapsedExtent;
 }

@@ -16,7 +16,7 @@ Flutter beta, pinned with fvm (`.fvmrc`). Run Flutter and Dart as `fvm flutter` 
 
 ## Checks
 
-Run these before committing; CI runs the same, with `dart format -o none --set-exit-if-changed .` for the formatting, on stable and beta.
+Run these before committing; CI runs the same, with `dart format -o none --set-exit-if-changed .` for the formatting, on beta.
 
 ```
 fvm dart format .
@@ -36,7 +36,7 @@ fvm flutter build web --wasm
 node tool/example_cdp.mjs --check
 ```
 
-CI also runs `dart pub publish --dry-run` on stable.
+CI also runs `dart pub publish --dry-run`.
 
 ## Running the example on a phone
 

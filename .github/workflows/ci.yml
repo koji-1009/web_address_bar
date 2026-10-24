@@ -25,7 +25,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        channel: [stable, beta]
+        # The package needs Flutter 3.50 or later, which is not on stable yet.
+        channel: [beta]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -79,5 +80,5 @@ jobs:
         run: node example/tool/example_cdp.mjs --check --chrome=/usr/bin/google-chrome
 
       - name: Publish dry run
-        if: matrix.channel == 'stable'
+        if: matrix.channel == 'beta'
         run: dart pub publish --dry-run
