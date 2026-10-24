@@ -1,7 +1,7 @@
 name: Pages
 
 # Serves the example app at https://koji-1009.github.io/web_address_bar/, for
-# trying the package on a phone. Built with Flutter master, which has the
+# trying the package on a phone. Built with Flutter beta, which has the
 # engine changes the package relies on for iOS (flutter/flutter#193744).
 
 on:
@@ -29,16 +29,9 @@ jobs:
 
       - uses: koji-1009/setup-flutter@8602f8dee92d2365ed4d9af298572fbb38ab8c69 # v1.4.1
         with:
-          channel: master
-          # The release manifest has no master channel.
-          git-source: git
+          channel: beta
           cache-sdk: false
           cache-pub: false
-
-      # Works out the SDK's version from its git tags; without it, pub sees a
-      # master SDK cloned from git as 0.0.0-unknown and rejects the package's
-      # Flutter constraint.
-      - run: flutter --version
 
       - name: Build the example
         working-directory: example

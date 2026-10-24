@@ -12,7 +12,7 @@
 
 ## Toolchain
 
-Flutter master, pinned with fvm (`.fvmrc`). Run Flutter and Dart as `fvm flutter` and `fvm dart`.
+Flutter beta, pinned with fvm (`.fvmrc`). Run Flutter and Dart as `fvm flutter` and `fvm dart`.
 
 ## Checks
 
