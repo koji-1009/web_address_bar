@@ -36,7 +36,7 @@ MaterialApp(
 );
 ```
 
-Routes that are not current, such as a page under a dialog, and hidden ones, such as the tabs an `IndexedStack` does not show, are left alone.
+Only a scroll view in the foreground is scrolled: a page under another route or a dialog, and hidden tabs, such as those an `IndexedStack` or an `Offstage` does not show, are left alone.
 
 ## How it works
 

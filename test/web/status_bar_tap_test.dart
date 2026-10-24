@@ -268,6 +268,111 @@ void main() {
       expect(offsetOf(tester, 'two'), twoOffset);
     });
 
+    testWidgets('leaves a tab under a dialog alone', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        WidgetsApp(
+          navigatorKey: navigator,
+          color: const Color(0xFF000000),
+          builder: (BuildContext context, Widget? child) =>
+              WebAddressBarScrollToTop(child: child!),
+          pageRouteBuilder:
+              <T>(RouteSettings settings, WidgetBuilder builder) =>
+                  PageRouteBuilder<T>(
+                    settings: settings,
+                    pageBuilder: (BuildContext context, _, _) =>
+                        builder(context),
+                  ),
+          home: IndexedStack(
+            children: <Widget>[
+              Navigator(
+                onGenerateRoute: (RouteSettings settings) =>
+                    PageRouteBuilder<void>(
+                      pageBuilder: (BuildContext context, _, _) => page('tab'),
+                    ),
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.drag(
+        find.byKey(const ValueKey<String>('tab')),
+        const Offset(0, -2000),
+      );
+      await tester.pumpAndSettle();
+      final double tabOffset = offsetOf(tester, 'tab');
+      navigator.currentState!.push(
+        RawDialogRoute<void>(
+          pageBuilder: (BuildContext context, _, _) =>
+              const SizedBox(width: 100, height: 100),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      WebAddressBarController.instance.statusBarTaps.notify();
+      await tester.pumpAndSettle();
+
+      expect(offsetOf(tester, 'tab'), tabOffset);
+    });
+
+    testWidgets('scrolls the tab shown, not one an Offstage hides', (
+      WidgetTester tester,
+    ) async {
+      final ValueNotifier<int> tab = ValueNotifier<int>(0);
+      Widget tabNavigator(String name, int index) =>
+          ValueListenableBuilder<int>(
+            valueListenable: tab,
+            builder: (BuildContext context, int shown, Widget? child) =>
+                Offstage(offstage: shown != index, child: child),
+            child: Navigator(
+              onGenerateRoute: (RouteSettings settings) =>
+                  PageRouteBuilder<void>(
+                    pageBuilder: (BuildContext context, _, _) => page(name),
+                  ),
+            ),
+          );
+      await tester.pumpWidget(
+        WidgetsApp(
+          color: const Color(0xFF000000),
+          builder: (BuildContext context, Widget? child) =>
+              WebAddressBarScrollToTop(child: child!),
+          pageRouteBuilder:
+              <T>(RouteSettings settings, WidgetBuilder builder) =>
+                  PageRouteBuilder<T>(
+                    settings: settings,
+                    pageBuilder: (BuildContext context, _, _) =>
+                        builder(context),
+                  ),
+          // The way CupertinoTabScaffold keeps the tabs it does not show.
+          home: Stack(
+            children: <Widget>[tabNavigator('one', 0), tabNavigator('two', 1)],
+          ),
+        ),
+      );
+      await tester.drag(
+        find.byKey(const ValueKey<String>('one')),
+        const Offset(0, -2000),
+      );
+      await tester.pumpAndSettle();
+      tab.value = 1;
+      await tester.pumpAndSettle();
+      await tester.drag(
+        find.byKey(const ValueKey<String>('two')),
+        const Offset(0, -2000),
+      );
+      await tester.pumpAndSettle();
+      tab.value = 0;
+      await tester.pumpAndSettle();
+      final double twoOffset = offsetOf(tester, 'two');
+
+      WebAddressBarController.instance.statusBarTaps.notify();
+      await tester.pumpAndSettle();
+
+      expect(offsetOf(tester, 'one'), 0);
+      expect(offsetOf(tester, 'two'), twoOffset);
+    });
+
     testWidgets('stops listening when it is removed', (
       WidgetTester tester,
     ) async {
