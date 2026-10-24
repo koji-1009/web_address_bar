@@ -27,7 +27,7 @@ void main() {
 
 ### Scrolling to the top on a status bar tap (iOS)
 
-Safari answers a tap on the iOS status bar by scrolling the document, which the package has taken over. Add `WebAddressBarScrollToTop` above the `Navigator` to scroll the current route's primary scroll view to the top instead, as a native iOS app does:
+Safari answers a tap on the iOS status bar by scrolling the document, which the package has taken over. Add `WebAddressBarScrollToTop` above the `Navigator` to scroll the primary scroll view in the foreground to the top instead, as a native iOS app does:
 
 ```dart
 MaterialApp(
@@ -60,18 +60,18 @@ Based on [flutter/flutter#184281](https://github.com/flutter/flutter/pull/184281
 - Takes effect only for a full-page app with the implicit view (no custom `hostElement`, no multi-view) with `<flutter-view>` under `<body>`. It does nothing if the page already scrolls itself: `touch-action` other than `none` on `<body>`, `overflow` changed on `<html>` or `<body>`, or a document taller than the viewport.
 - On iOS, engines with [flutter/flutter#193744](https://github.com/flutter/flutter/pull/193744) (Flutter 3.50 beta and later) grow the view as the toolbar collapses. Earlier engines leave a strip at the bottom once it has collapsed.
 - Engines without [flutter/flutter#194109](https://github.com/flutter/flutter/pull/194109) can remove the accessibility placeholder in the middle of a drag that started on it. The package follows a contact on the element it started on, so the drag still ends.
+- With semantics enabled, the engine gives its scrollable semantics nodes `touch-action: none`, so that the framework handles their scrolling ([`semantics/scrollable.dart`](https://github.com/flutter/flutter/blob/master/engine/src/flutter/lib/web_ui/lib/src/engine/semantics/scrollable.dart)). A drag that starts on one does not collapse the bar.
 
 ## Limitations
 
 - In-app browser sheets that rely on the page's scroll position are not handled: the page's scroll position does not follow the app's content.
 - The browser does not report a status bar tap. It is inferred from a scroll toward the top with no finger on the screen.
 - Touch input carries no pressure or tilt. A pen on the screen arrives as a touch; a hovering pen is reported as a stylus as usual. The movement of a pen, or of more than one finger, follows the browser's throttled `touchmove`. Apps that need pressure or tilt should not enable the package.
-- With semantics enabled, a drag that starts on a scrollable semantics node does not collapse the bar. This comes from the engine, which gives those nodes `touch-action: none` so that the framework handles their scrolling ([`semantics/scrollable.dart`](https://github.com/flutter/flutter/blob/master/engine/src/flutter/lib/web_ui/lib/src/engine/semantics/scrollable.dart)).
 - Pull-to-refresh of the page is unavailable by design.
 
 ## Example
 
-Try it on a phone at <https://koji-1009.github.io/web_address_bar/>. [example/](example/) has test screens for lists, nested scrollables, interactive widgets, a page that does not scroll, sliver app bars, tabs, pull to refresh, pinch, a platform view, turning the package off and on, `collapsedExtent` and the long-drag repro of flutter/flutter#194104, with what to check on a device.
+Try it on a phone at <https://koji-1009.github.io/web_address_bar/>. [example/](example/) has test screens for lists, nested scrollables, interactive widgets, a page that does not scroll, sliver app bars, tabs, pull to refresh, pinch, a platform view, turning the package off and on, `collapsedExtent` and the long-drag repro of [flutter/flutter#194104](https://github.com/flutter/flutter/issues/194104), with what to check on a device.
 
 ## License
 
