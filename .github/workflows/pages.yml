@@ -1,7 +1,8 @@
 name: Pages
 
-# Serves the example app at https://koji-1009.github.io/web_address_bar/, for
-# trying the package on a phone. Built with Flutter beta, which has the
+# Serves the example app at https://koji-1009.github.io/web_address_bar/, and
+# its WebAssembly build at https://koji-1009.github.io/web_address_bar/wasm/,
+# for trying the package on a phone. Built with Flutter beta, which has the
 # engine changes the package relies on for iOS (flutter/flutter#193744).
 
 on:
@@ -33,9 +34,13 @@ jobs:
           cache-sdk: false
           cache-pub: false
 
-      - name: Build the example
+      - name: Build the example (JavaScript)
         working-directory: example
         run: flutter build web --base-href /web_address_bar/
+
+      - name: Build the example (WebAssembly)
+        working-directory: example
+        run: flutter build web --wasm --base-href /web_address_bar/wasm/ --output ${{ github.workspace }}/example/build/web/wasm
 
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 

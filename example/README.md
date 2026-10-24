@@ -17,7 +17,7 @@ MaterialApp(
 );
 ```
 
-It is served, built with Flutter beta, at <https://koji-1009.github.io/web_address_bar/> (over HTTPS, so Chrome on Android fires `pointerrawupdate`). To build it yourself:
+It is served, built with Flutter beta, at <https://koji-1009.github.io/web_address_bar/>, and compiled to WebAssembly at <https://koji-1009.github.io/web_address_bar/wasm/> (over HTTPS, so Chrome on Android fires `pointerrawupdate`). The WebAssembly build runs in Chrome; other browsers fall back to its JavaScript build. To build it yourself:
 
 ```
 flutter build web --profile        # or --wasm
