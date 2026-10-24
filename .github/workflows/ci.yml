@@ -4,8 +4,8 @@ on:
   push:
     branches: [main, develop]
   pull_request:
-  # The package leans on the DOM the engine builds; a weekly run on beta and
-  # master catches an engine change before it reaches stable.
+  # The package leans on the DOM the engine builds; a weekly run on beta
+  # catches an engine change before it reaches stable.
   schedule:
     - cron: '0 3 * * 1'
   workflow_dispatch:
@@ -25,15 +25,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        channel: [stable, beta, master]
+        channel: [stable, beta]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - uses: koji-1009/setup-flutter@8602f8dee92d2365ed4d9af298572fbb38ab8c69 # v1.4.1
         with:
           channel: ${{ matrix.channel }}
-          # The release manifest has no master channel.
-          git-source: ${{ matrix.channel == 'master' && 'git' || 'release' }}
           cache-sdk: false
           cache-pub: false
 

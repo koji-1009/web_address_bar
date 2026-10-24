@@ -16,7 +16,7 @@ Flutter beta, pinned with fvm (`.fvmrc`). Run Flutter and Dart as `fvm flutter` 
 
 ## Checks
 
-Run these before committing; CI runs the same, with `dart format -o none --set-exit-if-changed .` for the formatting, on stable, beta and master.
+Run these before committing; CI runs the same, with `dart format -o none --set-exit-if-changed .` for the formatting, on stable and beta.
 
 ```
 fvm dart format .
