@@ -1,12 +1,8 @@
-// The web implementation behind `WebAddressBar`, chosen by the conditional
-// import in `../web_address_bar.dart`.
-
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
 import 'package:flutter/foundation.dart';
 
-import '../web_address_bar.dart';
 import 'document_scroller.dart';
 import 'environment.dart';
 import 'pointer_injector.dart';
@@ -15,31 +11,15 @@ import 'touch_input_source.dart';
 import 'touch_interceptor.dart';
 import 'viewport_metrics.dart';
 
-/// See [WebAddressBar.enable].
-void enable(Set<TargetPlatform> platforms) =>
-    WebAddressBarController.instance.enable(platforms);
-
-/// See [WebAddressBar.disable].
-void disable() => WebAddressBarController.instance.disable();
-
-/// See [WebAddressBar.isActive].
-bool get isActive => WebAddressBarController.instance.isActive;
-
-/// See [WebAddressBar.collapsedExtent].
-ValueListenable<double> get collapsedExtent =>
-    WebAddressBarController.instance.collapsedExtent;
-
-/// Notifies its listeners of each tap on the iOS status bar.
-Listenable get statusBarTaps => WebAddressBarController.instance.statusBarTaps;
-
 /// Taps on the iOS status bar, for `WebAddressBarScrollToTop`.
 class StatusBarTaps extends ChangeNotifier {
   /// Notifies the listeners of a tap.
   void notify() => notifyListeners();
 }
 
-/// Something [WebAddressBarController] sets up on [enable] and takes down on
-/// [disable].
+/// Something [WebAddressBarController] sets up on
+/// [WebAddressBarController.enable] and takes down on
+/// [WebAddressBarController.disable].
 abstract interface class SessionPart {
   /// Undoes everything the part did.
   void dispose();

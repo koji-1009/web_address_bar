@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import 'stub/web_address_bar_stub.dart'
-    if (dart.library.js_interop) 'web/controller.dart'
-    as platform;
+import 'platform/shared.dart' as platform;
 
 /// Lets the mobile browser address bar collapse in a full-page Flutter web
 /// app, while scrolling stays in the app's own scroll views.

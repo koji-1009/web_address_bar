@@ -1,9 +1,7 @@
 import 'package:flutter/gestures.dart' show HitTestEntry, HitTestResult;
 import 'package:flutter/widgets.dart';
 
-import '../stub/web_address_bar_stub.dart'
-    if (dart.library.js_interop) '../web/controller.dart'
-    as platform;
+import '../platform/shared.dart' as platform;
 import '../web_address_bar.dart';
 
 /// Scrolls the current route's primary scroll view to the top when the iOS

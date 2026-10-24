@@ -5,8 +5,8 @@
 ## Layout
 
 - `lib/src/web_address_bar.dart`: the public API (`WebAddressBar`); `lib/src/widgets/`: its widget, `WebAddressBarScrollToTop`.
+- `lib/src/platform/`: `shared.dart` exports `web.dart` on the web and `unsupported.dart`, the no-op implementation, on every other platform.
 - `lib/src/web/`: the web implementation, one `SessionPart` per concern, set up and taken down by `controller.dart`.
-- `lib/src/stub/`: the no-op implementation for every other platform.
 - `test/stub_test.dart` runs on the VM; `test/web/` runs in Chrome.
 - `example/`: the test app, also served on GitHub Pages, and `example/tool/example_cdp.mjs`, the end-to-end check.
 
