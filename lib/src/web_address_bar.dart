@@ -25,7 +25,8 @@ abstract final class WebAddressBar {
   /// `onPanStart` or `onLongPress`. A touch that started before [enable] is
   /// not translated, so on Android the framework never sees it end and keeps
   /// the pointer down until the page is reloaded. Callbacks that run once the
-  /// finger has lifted, such as `onTap` and `onChanged`, are fine.
+  /// finger has lifted, such as `onTap` and the `onChanged` of a `Switch`, are
+  /// fine; the `onChanged` of a `Slider` runs while the finger is down.
   ///
   /// Does nothing, and leaves [isActive] false, outside [platforms], when
   /// Flutter does not own the whole page, when the page structure is not the
