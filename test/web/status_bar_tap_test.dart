@@ -21,24 +21,25 @@ void _scrollTo(double top) {
   web.window.dispatchEvent(web.Event('scroll'));
 }
 
-void _dispatchTouch(String type, {required bool fingerDown}) {
+/// Dispatches a TouchEvent of [type] for one finger at [target], the body by
+/// default, with that finger still on the screen if [fingerDown].
+void _dispatchTouch(
+  String type, {
+  required bool fingerDown,
+  web.EventTarget? target,
+}) {
+  target ??= web.document.body!;
+  final web.Touch touch = web.Touch(
+    (JSObject()
+          ..setProperty('identifier'.toJS, 1.toJS)
+          ..setProperty('target'.toJS, target))
+        as web.TouchInit,
+  );
   final JSObject init = JSObject()
     ..setProperty('bubbles'.toJS, true.toJS)
-    ..setProperty(
-      'touches'.toJS,
-      <web.Touch>[
-        if (fingerDown)
-          web.Touch(
-            (JSObject()
-                  ..setProperty('identifier'.toJS, 1.toJS)
-                  ..setProperty('target'.toJS, web.document.body))
-                as web.TouchInit,
-          ),
-      ].toJS,
-    );
-  web.document.body!.dispatchEvent(
-    web.TouchEvent(type, init as web.TouchEventInit),
-  );
+    ..setProperty('changedTouches'.toJS, <web.Touch>[touch].toJS)
+    ..setProperty('touches'.toJS, <web.Touch>[if (fingerDown) touch].toJS);
+  target.dispatchEvent(web.TouchEvent(type, init as web.TouchEventInit));
 }
 
 void main() {
@@ -104,6 +105,18 @@ void main() {
 
       _dispatchTouch('touchend', fingerDown: false);
       _scrollTo(50);
+      expect(taps, 1);
+    });
+
+    test('a finger that lifts off an element no longer in the DOM is up', () {
+      final web.Element placeholder = web.document.createElement('div');
+      web.document.body!.append(placeholder);
+      _dispatchTouch('touchstart', fingerDown: true, target: placeholder);
+      placeholder.remove();
+      _dispatchTouch('touchend', fingerDown: false, target: placeholder);
+
+      _scrollTo(100);
+
       expect(taps, 1);
     });
 

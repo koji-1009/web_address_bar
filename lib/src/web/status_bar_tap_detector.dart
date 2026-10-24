@@ -25,7 +25,13 @@ class StatusBarTapDetector implements SessionPart {
   /// Starts watching the document's scroll position.
   StatusBarTapDetector(this._onTap) {
     _onTouch = ((web.Event event) {
-      _touching = (event as web.TouchEvent).touches.length > 0;
+      final web.TouchEvent touchEvent = event as web.TouchEvent;
+      _touching = touchEvent.touches.length > 0;
+      if (event.type == 'touchstart') {
+        _listenToTargets(touchEvent.changedTouches);
+      } else if (!_touching) {
+        _releaseTargets();
+      }
       if (!_touching && _reported) {
         _parkWhenSettled();
       }
@@ -44,11 +50,40 @@ class StatusBarTapDetector implements SessionPart {
   bool _reported = false;
   Timer? _settle;
 
+  /// The elements touches started on while a finger is down.
+  ///
+  /// A touch's `touchend` and `touchcancel` keep firing at the element it
+  /// started on after that element leaves the DOM, as the engine's semantics
+  /// placeholder can, but then no longer reach the window.
+  final Set<web.EventTarget> _targets = <web.EventTarget>{};
+
   static const List<String> _touchTypes = <String>[
     'touchstart',
     'touchend',
     'touchcancel',
   ];
+
+  static const List<String> _liftTypes = <String>['touchend', 'touchcancel'];
+
+  void _listenToTargets(web.TouchList touches) {
+    for (int i = 0; i < touches.length; i++) {
+      final web.EventTarget target = touches.item(i)!.target;
+      if (_targets.add(target)) {
+        for (final String type in _liftTypes) {
+          target.addEventListener(type, _onTouch, _passiveOptions);
+        }
+      }
+    }
+  }
+
+  void _releaseTargets() {
+    for (final web.EventTarget target in _targets) {
+      for (final String type in _liftTypes) {
+        target.removeEventListener(type, _onTouch, _passiveOptions);
+      }
+    }
+    _targets.clear();
+  }
 
   static final web.AddEventListenerOptions _captureOptions =
       web.AddEventListenerOptions(capture: true, passive: true);
@@ -99,6 +134,7 @@ class StatusBarTapDetector implements SessionPart {
   @override
   void dispose() {
     _settle?.cancel();
+    _releaseTargets();
     for (final String type in _touchTypes) {
       web.window.removeEventListener(type, _onTouch, _captureOptions);
     }
