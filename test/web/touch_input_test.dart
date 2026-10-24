@@ -410,4 +410,28 @@ void main() {
     expect(changes(), contains(ui.PointerChange.down));
     _dispatchPointer(_root, 'pointerup', pointerId: 43);
   });
+
+  test('disable can be called as a contact lifts, as from onTap', () {
+    final List<String> errors = <String>[];
+    final JSFunction onError = ((web.ErrorEvent event) {
+      errors.add(event.message);
+    }).toJS;
+    web.window.addEventListener('error', onError);
+    ui.PlatformDispatcher.instance.onPointerDataPacket =
+        (ui.PointerDataPacket packet) {
+          data.addAll(packet.data);
+          if (packet.data.any((d) => d.change == ui.PointerChange.up)) {
+            WebAddressBar.disable();
+          }
+        };
+
+    final web.Touch touch = _touch(_root, 44, 10, 10);
+    _dispatchTouch(_root, 'touchstart', <web.Touch>[touch]);
+    _dispatchTouch(_root, 'touchend', <web.Touch>[touch]);
+    web.window.removeEventListener('error', onError);
+
+    expect(errors, isEmpty);
+    expect(WebAddressBar.isActive, isFalse);
+    expect(changes(), contains(ui.PointerChange.up));
+  });
 }

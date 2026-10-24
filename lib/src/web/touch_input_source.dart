@@ -72,6 +72,11 @@ class TouchInputSource implements SessionPart {
   /// its next `touchmove` redundant.
   int? _rawUpdatedContact;
 
+  /// Whether [dispose] has run, which it can in the middle of [_translate]:
+  /// an injected event runs the framework's callbacks, such as `onTap`, which
+  /// can call `WebAddressBar.disable`.
+  bool _disposed = false;
+
   void _listenToTarget(web.EventTarget target) {
     final int count = _listenedTargets[target] ?? 0;
     _listenedTargets[target] = count + 1;
@@ -124,7 +129,7 @@ class TouchInputSource implements SessionPart {
 
   void _translate(web.TouchEvent event, ContactChange change) {
     final web.TouchList touches = event.changedTouches;
-    for (int i = 0; i < touches.length; i++) {
+    for (int i = 0; i < touches.length && !_disposed; i++) {
       final web.Touch touch = touches.item(i)!;
       final int device = touch.identifier;
       switch (change) {
@@ -155,21 +160,27 @@ class TouchInputSource implements SessionPart {
           }
           _rawUpdatedContact = null;
       }
+      final bool lifting =
+          change == ContactChange.up || change == ContactChange.cancel;
+      final web.EventTarget target = lifting
+          ? _contacts.remove(device)!
+          : _contacts[device]!;
       _injector.inject(
         change,
         device: device,
         clientX: touch.clientX,
         clientY: touch.clientY,
-        target: _contacts[device],
+        target: target,
       );
-      if (change == ContactChange.up || change == ContactChange.cancel) {
-        _releaseTarget(_contacts.remove(device)!);
+      if (lifting && !_disposed) {
+        _releaseTarget(target);
       }
     }
   }
 
   @override
   void dispose() {
+    _disposed = true;
     _root.removeEventListener('touchstart', _onTouchStart, _passive);
     web.window.removeEventListener('pointerrawupdate', _onRawUpdate, _passive);
     // Cancel the touches still down, so that no pointer outlives the
