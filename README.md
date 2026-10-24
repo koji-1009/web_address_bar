@@ -60,7 +60,7 @@ Based on [flutter/flutter#184281](https://github.com/flutter/flutter/pull/184281
 - Takes effect only for a full-page app with the implicit view (no custom `hostElement`, no multi-view) with `<flutter-view>` under `<body>`. It does nothing if the page already scrolls itself: `touch-action` other than `none` on `<body>`, `overflow` changed on `<html>` or `<body>`, or a document taller than the viewport.
 - On iOS, engines with [flutter/flutter#193744](https://github.com/flutter/flutter/pull/193744) (Flutter 3.50 beta and later) grow the view as the toolbar collapses. Earlier engines leave a strip at the bottom once it has collapsed.
 - Engines without [flutter/flutter#194109](https://github.com/flutter/flutter/pull/194109) can remove the accessibility placeholder in the middle of a drag that started on it. The package follows a contact on the element it started on, so the drag still ends.
-- With semantics enabled, the engine gives its scrollable semantics nodes `touch-action: none`, so that the framework handles their scrolling ([`semantics/scrollable.dart`](https://github.com/flutter/flutter/blob/master/engine/src/flutter/lib/web_ui/lib/src/engine/semantics/scrollable.dart)). A drag that starts on one does not collapse the bar.
+- With semantics enabled, the engine gives its scrollable semantics nodes `touch-action: none`, so that the framework handles their scrolling ([`semantics/scrollable.dart`](https://github.com/flutter/flutter/blob/3.50.0-0.2.pre/engine/src/flutter/lib/web_ui/lib/src/engine/semantics/scrollable.dart#L155-L164)). A drag that starts on one does not collapse the bar.
 
 ## Limitations
 
