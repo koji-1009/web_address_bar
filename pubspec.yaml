@@ -12,9 +12,6 @@ environment:
   sdk: ^3.13.0
   flutter: ">=3.47.0"
 
-platforms:
-  web:
-
 dependencies:
   flutter:
     sdk: flutter
