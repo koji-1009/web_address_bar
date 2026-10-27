@@ -6,6 +6,13 @@
 
 Lets the mobile browser address bar collapse in full-page Flutter web apps on Android and iOS, while scrolling stays in Flutter's own scroll views.
 
+## Demo
+
+Try it on a phone:
+
+- JavaScript: <https://koji-1009.github.io/web_address_bar/>
+- WebAssembly: <https://koji-1009.github.io/web_address_bar/wasm/>
+
 ## Why
 
 A mobile browser collapses its address bar when the user scrolls the document. A full-page Flutter web app gives it nothing to scroll: the page is exactly as tall as the viewport, and `<body>` has `touch-action: none`, so every touch goes to Flutter.
@@ -72,11 +79,6 @@ Based on [flutter/flutter#184281](https://github.com/flutter/flutter/pull/184281
 - Pull-to-refresh of the page is unavailable by design.
 
 ## Example
-
-Try it on a phone:
-
-- JavaScript: <https://koji-1009.github.io/web_address_bar/>
-- WebAssembly: <https://koji-1009.github.io/web_address_bar/wasm/> (in Chrome; other browsers fall back to JavaScript)
 
 [example/](example/) has test screens for lists, nested scrollables, interactive widgets, a page that does not scroll, sliver app bars, tabs, pull to refresh, pinch, a platform view, turning the package off and on, `collapsedExtent` and the long-drag repro of [flutter/flutter#194104](https://github.com/flutter/flutter/issues/194104), with what to check on a device.
 
