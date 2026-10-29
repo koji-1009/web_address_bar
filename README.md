@@ -23,7 +23,7 @@ This package gives the browser a document of its own to scroll, under a Flutter 
 
 ## Requirements
 
-- Flutter 3.50 or later, including the 3.50.0 prereleases on the beta channel.
+- Flutter 3.50.0-0.2.pre or later.
 - A full-page app with the implicit view (no custom `hostElement`, no multi-view), with `<flutter-view>` under `<body>`.
 - A page that does not already scroll itself. `enable` does nothing if `<body>` has `touch-action` other than `none`, `overflow-y` is changed on `<html>` or `<body>`, or the document is taller than the viewport.
 
