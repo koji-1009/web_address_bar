@@ -1,6 +1,6 @@
 name: web_address_bar
 description: Lets the mobile browser address bar collapse in full-page Flutter web apps on Android and iOS, while scrolling stays in Flutter's own scroll views.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/koji-1009/web_address_bar
 topics:
   - web
