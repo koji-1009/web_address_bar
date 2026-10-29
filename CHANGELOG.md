@@ -1,3 +1,8 @@
+## 0.1.1
+
+- Require Flutter 3.50.0-0.2.pre.
+- Reorganize the README: the requirements and limitations come before how it works.
+
 ## 0.1.0
 
 - Initial release.

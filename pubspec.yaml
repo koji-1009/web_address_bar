@@ -10,7 +10,7 @@ topics:
 
 environment:
   sdk: ^3.13.0
-  flutter: ">=3.50.0-0.1.pre"
+  flutter: ">=3.50.0-0.2.pre"
 
 dependencies:
   flutter:
