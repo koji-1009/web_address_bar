@@ -2,13 +2,12 @@ name: Pages
 
 # Serves the example app at https://koji-1009.github.io/web_address_bar/, and
 # its WebAssembly build at https://koji-1009.github.io/web_address_bar/wasm/,
-# for trying the package on a phone. Built with Flutter beta, as the package
-# needs Flutter 3.50 or later.
+# for trying the package on a phone. Built with Flutter stable.
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -27,26 +26,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
       - uses: koji-1009/setup-flutter@158060745e545426c27a6e9814e5c5486a5f7dd8 # v1.4.2
-        with:
-          channel: beta
-          cache-sdk: false
-          cache-pub: false
-
       - name: Build the example (JavaScript)
         working-directory: example
         run: flutter build web --base-href /web_address_bar/
-
       - name: Build the example (WebAssembly)
         working-directory: example
         run: flutter build web --wasm --base-href /web_address_bar/wasm/ --output ${{ github.workspace }}/example/build/web/wasm
-
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: example/build/web
-
       - id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

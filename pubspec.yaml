@@ -9,8 +9,8 @@ topics:
   - browser
 
 environment:
-  sdk: ^3.13.0
-  flutter: ">=3.50.0-0.2.pre"
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
 
 dependencies:
   flutter:

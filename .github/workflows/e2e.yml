@@ -1,0 +1,51 @@
+name: E2E
+
+# Runs the tests and the end-to-end check on beta. The package leans on the
+# DOM the engine builds and the listeners PointerBinding registers; running on
+# beta, on every pull request and weekly, catches an engine change before it
+# reaches stable.
+
+on:
+  pull_request:
+  schedule:
+    - cron: '0 3 * * 1'
+
+permissions:
+  contents: read
+
+# A newer push to the same branch or pull request cancels the run in progress.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+      - uses: koji-1009/setup-flutter@158060745e545426c27a6e9814e5c5486a5f7dd8 # v1.4.2
+        with:
+          channel: beta
+          cache-sdk: false
+          cache-pub: false
+      - run: flutter analyze
+      - name: Test (Chrome, JavaScript)
+        run: flutter test --platform chrome
+      - name: Test (Chrome, WebAssembly)
+        run: flutter test --platform chrome --wasm
+      - name: Test the example
+        working-directory: example
+        run: flutter test --platform chrome
+      - name: Build the example (JavaScript)
+        working-directory: example
+        run: flutter build web --profile
+      - name: End-to-end (headless Chrome, Android emulation, JavaScript)
+        run: node example/tool/example_cdp.mjs --check --chrome=/usr/bin/google-chrome
+      - name: Build the example (WebAssembly)
+        working-directory: example
+        run: flutter build web --wasm
+      - name: End-to-end (headless Chrome, Android emulation, WebAssembly)
+        run: node example/tool/example_cdp.mjs --check --chrome=/usr/bin/google-chrome
