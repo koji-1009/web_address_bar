@@ -23,7 +23,7 @@ This package gives the browser a document of its own to scroll, under a Flutter 
 
 ## Requirements
 
-- Flutter 3.50.0-0.2.pre or later.
+- Flutter 3.50.0 or later.
 - A full-page app with the implicit view (no custom `hostElement`, no multi-view), with `<flutter-view>` under `<body>`.
 - A page that does not already scroll itself. `enable` does nothing if `<body>` has `touch-action` other than `none`, `overflow-y` is changed on `<html>` or `<body>`, or the document is taller than the viewport.
 
@@ -63,7 +63,7 @@ Only a scroll view in the foreground is scrolled: a page under another route or 
 
 - Touch input carries no pressure or tilt. A pen on the screen arrives as a touch; a hovering pen is reported as a stylus as usual. The movement of a pen, or of more than one finger, follows the browser's throttled `touchmove`. Apps that need pressure or tilt should not enable the package.
 - Pull-to-refresh of the page is unavailable by design.
-- With semantics enabled, the engine gives its scrollable semantics nodes `touch-action: none`, so that the framework handles their scrolling ([`semantics/scrollable.dart`](https://github.com/flutter/flutter/blob/3.50.0-0.2.pre/engine/src/flutter/lib/web_ui/lib/src/engine/semantics/scrollable.dart#L155-L164)). A drag that starts on one does not collapse the bar.
+- With semantics enabled, the engine gives its scrollable semantics nodes `touch-action: none`, so that the framework handles their scrolling ([`semantics/scrollable.dart`](https://github.com/flutter/flutter/blob/3.50.0/engine/src/flutter/lib/web_ui/lib/src/engine/semantics/scrollable.dart#L155-L164)). A drag that starts on one does not collapse the bar.
 - The browser does not report a status bar tap. It is inferred from a scroll toward the top with no finger on the screen.
 
 ## How it works

@@ -1,3 +1,7 @@
+## unreleased
+
+- Require Flutter 3.50.0.
+
 ## 0.1.1
 
 - Require Flutter 3.50.0-0.2.pre.

@@ -4,6 +4,3 @@ build/
 .idea/
 *.iml
 .DS_Store
-
-# FVM Version Cache
-.fvm/

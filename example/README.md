@@ -17,7 +17,7 @@ MaterialApp(
 );
 ```
 
-It is served, built with Flutter beta, at <https://koji-1009.github.io/web_address_bar/>, and compiled to WebAssembly at <https://koji-1009.github.io/web_address_bar/wasm/> (over HTTPS, so Chrome on Android fires `pointerrawupdate`). The WebAssembly build runs in Chrome; other browsers fall back to its JavaScript build. To build it yourself:
+It is served, built with Flutter stable, at <https://koji-1009.github.io/web_address_bar/>, and compiled to WebAssembly at <https://koji-1009.github.io/web_address_bar/wasm/> (over HTTPS, so Chrome on Android fires `pointerrawupdate`). The WebAssembly build runs in Chrome; other browsers fall back to its JavaScript build. To build it yourself:
 
 ```
 flutter build web --profile        # or --wasm
@@ -55,7 +55,7 @@ Reload the page before each check.
 
 ## Automated check
 
-`tool/example_cdp.mjs` serves `build/web`, drives it in headless Chrome emulating an Android phone with trusted touch input through the Chrome DevTools Protocol, and prints what the long-drag, interactive-widgets and collapsed-extent screens report, where the document rests and any exception the page threw. `--check` makes it exit with status 1 on a problem; CI runs it.
+`tool/example_cdp.mjs` serves `build/web`, drives it in headless Chrome emulating an Android phone with trusted touch input through the Chrome DevTools Protocol, and prints what the long-drag, interactive-widgets and collapsed-extent screens report, where the document rests and any exception the page threw. `--check` makes it exit with status 1 on a problem; the E2E workflow runs it on every pull request.
 
 ```
 node tool/example_cdp.mjs --check

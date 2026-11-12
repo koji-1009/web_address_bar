@@ -12,27 +12,27 @@
 
 ## Toolchain
 
-Flutter beta, pinned with fvm (`.fvmrc`). Run Flutter and Dart as `fvm flutter` and `fvm dart`.
+Flutter stable, 3.50.0 or later.
 
 ## Checks
 
-Run these before committing; CI runs the same, with `dart format -o none --set-exit-if-changed .` for the formatting, on beta.
+Run these before committing; CI runs the same, with `dart format -o none --set-exit-if-changed .` for the formatting, on stable; the E2E workflow runs the analysis and the Chrome tests on beta.
 
 ```
-fvm dart format .
-fvm flutter analyze
-fvm flutter test
-fvm flutter test --platform chrome
-fvm flutter test --platform chrome --wasm
+dart format .
+flutter analyze
+flutter test
+flutter test --platform chrome
+flutter test --platform chrome --wasm
 ```
 
-For a change that affects input or the page setup, also run the example's checks from `example/`:
+For a change that affects input or the page setup, also run the example's checks from `example/`; CI builds the example, and the E2E workflow also runs the end-to-end check, on beta:
 
 ```
-fvm flutter test --platform chrome
-fvm flutter build web --profile
+flutter test --platform chrome
+flutter build web --profile
 node tool/example_cdp.mjs --check
-fvm flutter build web --wasm
+flutter build web --wasm
 node tool/example_cdp.mjs --check
 ```
 
@@ -41,14 +41,14 @@ node tool/example_cdp.mjs --check
 From `example/`, serve it on every network interface of the machine and open `http://<machine's IP>:8080/` on the phone:
 
 ```
-fvm flutter run -d web-server --web-hostname any --web-port 8080
+flutter run -d web-server --web-hostname any --web-port 8080
 ```
 
 Chrome on Android fires `pointerrawupdate` only in a secure context. Connect the phone with USB, run `adb reverse tcp:8080 tcp:8080`, and open `http://localhost:8080/` instead.
 
 ## Working on the code
 
-- The package depends on engine internals: the DOM the engine builds and the listeners `PointerBinding` registers. Read the engine source in `.fvm/flutter_sdk/engine/src/flutter/lib/web_ui/lib/src/engine/` before relying on its behaviour, and find which release an engine change is in with `git -C .fvm/flutter_sdk tag --contains <sha>`.
+- The package depends on engine internals: the DOM the engine builds and the listeners `PointerBinding` registers. Read the engine source in `engine/src/flutter/lib/web_ui/lib/src/engine/` of the Flutter SDK (its path is `flutterRoot` in `flutter --version --machine`) before relying on its behaviour, and find which release an engine change is in with `git -C <flutterRoot> tag --contains <sha>`.
 - Code must work compiled to both JavaScript and WebAssembly. Compare JS values with `strictEquals`, not `identical`, and read fractional `MouseEvent` coordinates as `JSNumber`, since `package:web` types them `int`.
 - Format with the default `dart format` settings.
 
